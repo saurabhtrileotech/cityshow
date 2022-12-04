@@ -1,0 +1,13 @@
+/node_modules
+/public/plugins
+/vendor
+.env
+.env.backup
+/.idea
+/.vscode
+/upload
+composer.phar
+/public/userProfile
+/public/banner_images
+/public/images
+/storage
