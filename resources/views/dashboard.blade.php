@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title','Teachus | Dashboard')
+@section('title','City Show | Dashboard')
 @push('style')
   <!-- overlayScrollbars -->
 <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
