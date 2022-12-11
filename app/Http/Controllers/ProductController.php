@@ -9,7 +9,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Product;
 use App\Models\ProductImage;
-
+use App\Models\ShopProduct;
 
 class ProductController extends Controller
 {
@@ -39,9 +39,6 @@ class ProductController extends Controller
                     $q->orWhere('products.price', 'like', '%' . $txt . '%');
                     $q->orWhereHas('shopkeeper', function ($query) use ($txt) {
                         $query->where('username', 'like', '%' . $txt . '%');
-                    });
-                    $q->orWhereHas('shop', function ($query) use ($txt) {
-                        $query->where('shop_name', 'like', '%' . $txt . '%');
                     });
                 }
             });
@@ -76,7 +73,6 @@ class ProductController extends Controller
             $nestedData['product_name'] = $val->name;
             $nestedData['price'] = $val->price;
             $nestedData['shopkeeper'] = $val->shopkeeper->username;
-            $nestedData['shop_name'] = $val->shop->shop_name;
             $nestedData['action'] = $action;
             $data[] = $nestedData;
         }
@@ -113,11 +109,25 @@ class ProductController extends Controller
         try {
             $product = new Product(); 
             $product->shopkeeper_id  = $request->shop_keeper_id;
-            $product->shop_id = $request->shop_id;
-            $product->name = $request->product_name;
-            $product->price = $request->product_price;
+            //$product->shop_id = $request->shop_id;
             $product->cat_id = ($request->category_id) ? $request->category_id : null;
-            $product->subcat_id = ($request->sub_category_id) ? $request->sub_category_id : null;   
+            $product->subcat_id = ($request->sub_category_id) ? $request->sub_category_id : null; 
+            $product->name = $request->product_name;
+            $product->brand_name = ($request->brand_name) ? $request->brand_name : null;
+            $product->model_name = ($request->model_name) ? $request->model_name : null;
+            $product->price = $request->product_price;
+            $product->selling_price = ($request->product_selling_price) ? $request->product_selling_price : null;
+            $product->gender = ($request->gender) ? $request->gender : null;
+            $product->size = ($request->size) ? implode(",",$request->size) : null;
+            $product->color = ($request->color) ? $request->color : null;
+            $product->material = ($request->material) ? $request->material : null;
+            $product->wight = ($request->weight) ? $request->weight : null;
+            $product->is_gold = ($request->is_gold) ? $request->is_gold : "0";
+            $product->device_os = ($request->device_os) ? $request->device_os : null;
+            $product->ram = ($request->ram) ? $request->ram : null;
+            $product->storage = ($request->storage) ? $request->storages : null;
+            $product->connectivity = ($request->connectivity) ? $request->connectivity : null;
+            $product->key_featurees = ($request->key_feature) ? implode(",",$request->key_feature) : null;    
             $product->description = ($request->description) ? $request->description : null;
 
            if($product->save()){
@@ -142,6 +152,18 @@ class ProductController extends Controller
                     }
                     
                 }
+                // Save Product to all shops
+                if($request->shop_id){
+                    foreach($request->shop_id as $shop_id){
+                        $shop_product = new ShopProduct();
+                        $shop_product->shop_id = $shop_id;
+                        $shop_product->product_id = $product->id;
+                        $shop_product->save();
+                    }
+                }
+
+
+
             }
             return redirect()->route('products')->with('success', 'Product added successfully!');
         } catch (Exception $e) {

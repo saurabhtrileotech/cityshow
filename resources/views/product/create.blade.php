@@ -56,12 +56,6 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="product_name" class="col-sm-12 col-form-label">Product Name<span class="text-danger">*</span></label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="product_name" value="{{old('product_name')}}" name="product_name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Category</label>
                     <div class="col-sm-8">
                        <select name="category_id" id="category_id" class="form-control select2">
@@ -70,6 +64,64 @@
                         <option {{ old('category_id') == $category->id ? "selected" : "" }} value="{{ $category->id }}">{{ $category->name}} </option>
                         @endforeach
                       </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_name" class="col-sm-12 col-form-label">Product Name<span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="product_name" value="{{old('product_name')}}" name="product_name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="model_name" class="col-sm-12 col-form-label">Model Name<span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="model_name" value="{{old('model_name')}}" name="model_name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_selling_price" class="col-sm-12 col-form-label">Product Selling Price<span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control" id="product_selling_price" value="{{old('product_selling_price')}}" name="product_selling_price">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_price" class="col-sm-12 col-form-label">Size</label>
+                    <div class="col-sm-8">
+                      <input type="checkbox" value="XXL" name="size[]">  XXL
+                      <input type="checkbox"  value="XL" name="size[]">  XL
+                      <input type="checkbox"  value="L" name="size[]">  L
+                      <input type="checkbox"  value="S" name="size[]">  S
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_price" class="col-sm-12 col-form-label">Warranty?</label>
+                    <div class="col-sm-8">
+                      <input type="checkbox" value="1" name="warranty">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="material" class="col-sm-12 col-form-label">Material</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="material" value="{{old('material')}}" name="material">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_price" class="col-sm-12 col-form-label">Gold?</label>
+                    <div class="col-sm-8">
+                      <input type="radio" value="1" name="is_gold"> Yes
+                      <input type="radio" value="0" name="is_gold"> No
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="ram" class="col-sm-12 col-form-label">Ram</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="ram" value="{{old('ram')}}" name="ram">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="ram" class="col-sm-12 col-form-label">Connectivity</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="connectivity" value="{{old('connectivity')}}" name="connectivity">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -83,19 +135,10 @@
                 <div class="form-group row">
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Shop <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
-                      <select name="shop_id" id="shop_id" class="form-control select2" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please select Shop');">
+                      <select name="shop_id[]" id="shop_id" class="form-control select2" multiple="multiple" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please select Shop');">
                         <option value="">Select Shop</option>
                       </select>
                       @error('shop_id')
-                      <div class="alert alert-danger">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="product_price" class="col-sm-12 col-form-label">Product Price<span class="text-danger">*</span></label>
-                    <div class="col-sm-8">
-                      <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please enter price');">
-                      @error('product_price')
                       <div class="alert alert-danger">{{ $message }}</div>
                       @enderror
                     </div>
@@ -109,9 +152,71 @@
                     </div>
                   </div>
                   <div class="form-group row">
+                    <label for="brand_name" class="col-sm-12 col-form-label">Brand Name<span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="brand_name" value="{{old('brand_name')}}" name="brand_name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_price" class="col-sm-12 col-form-label">Product Original Price<span class="text-danger">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="number" class="form-control" id="product_price" value="{{old('product_price')}}" name="product_price" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please enter price');">
+                      @error('product_price')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="product_price" class="col-sm-12 col-form-label">Gender</label>
+                    <div class="col-sm-8">
+                      <input type="radio" value="Male" name="gender"> Male
+                      <input type="radio"  value="Female" name="gender"> Female
+                      <input type="radio"  value="Child" name="gender"> Child
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="color" class="col-sm-12 col-form-label">Color</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="color" value="{{old('color')}}" name="color">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="weight" class="col-sm-12 col-form-label">Weight</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="weight" value="{{old('weight')}}" name="weight">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="device_os" class="col-sm-12 col-form-label">OS</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="device_os" value="{{old('device_os')}}" name="device_os">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="storage" class="col-sm-12 col-form-label">Storage</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="storage" value="{{old('storage')}}" name="storage">
+                    </div>
+                  </div>
+                  <div class="form-group row">
                     <label for="images" class="col-sm-12 col-form-label">Images<span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                       <input type="file" class="form-control" id="images" name="images[]" multiple>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                    <label for="storage" class="col-sm-12 col-form-label">Key Features</label>
+                    </div>
+                    <div class="col-md-6">
+                      <a class="add_key_feature"><i class="fa fa-plus"></i></a>
+                    </div>
+                    <div class="key_features">
+                      <div class="form-group row">
+                        <div class="col-sm">
+                          <input type="text" class="form-control"  name="key_feature[]" placeholder="Enter key Features">
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -168,6 +273,21 @@
               $("#sub_category_id").html(response.html);
           }
         });
+  });
+  $('.add_key_feature').click(function(e){
+      var html = "";
+      html += '<div class="form-group row">';
+      html += '<div class="col-md-10">'
+      html += '<div class="col-sm">';
+      html += '<input type="text" class="form-control" name="key_feature[]" placeholder="Enter key Features">';
+      html += '</div></div>';
+      html += '<div class="col-md-2">';
+      html += '<a class="remove_key_feature"><i class="fa fa-minus"></i></a>';
+      html += '</div></div>';
+      $('.key_features').append(html);
+  });
+  $(document).on("click", ".remove_key_feature", function(e) {
+      $(this).closest('.form-group').remove();
   });
 </script>
 @endpush

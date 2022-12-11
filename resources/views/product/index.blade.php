@@ -44,7 +44,6 @@
                                     <th>{{ __('Product Name')}}</th>
                                     <th>{{ __('Price')}}</th>
                                     <th>{{ __('Shop Keeper')}}</th>
-                                    <th>{{ __('Shop')}}</th>
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                             </thead>

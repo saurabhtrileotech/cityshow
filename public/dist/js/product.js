@@ -22,7 +22,6 @@
                 { "data": "product_name" },
                 { "data": "price" },
                 { "data": "shopkeeper" },
-                { "data": "shop_name" },
                 { "data": "action", sortable: false },
             ]
 
