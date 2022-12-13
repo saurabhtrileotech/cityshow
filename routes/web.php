@@ -21,15 +21,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function(){
 Route::get('/dashboard', function () { 
     return view('dashboard'); 
 })->name('dashboard');
-
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-});
 
 //Route::group(['middleware' => 'can:manage_role'], function(){   
     Route::get('/roles', [App\Http\Controllers\RolesController::class,'index']);
@@ -91,6 +91,6 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::post('/get-shop-by-shopkeeper', [App\Http\Controllers\ProductController::class, 'getShopByShopkeeper'])->name('get-shop-by-shopkeeper');
         Route::post('/get-subcat-by-category', [App\Http\Controllers\ProductController::class, 'getSubcatByCategory'])->name('get-subcat-by-category');
         
-
+    });
         
 
