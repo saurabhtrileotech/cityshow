@@ -62,7 +62,7 @@ class ShopkeeperController extends Controller
         foreach ($list_data as $key => $val) {
             $action = '';
             $action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>';
-            $action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="Shops" class="btn btn-primary edit" style="margin-right:5px;">Shops</a>';
+            //$action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="Shops" class="btn btn-primary edit" style="margin-right:5px;">Shops</a>';
             //$action .= '<a onclick="return deleteconfirm()" href="' . route('student.delete', array('id' => $val->id)) . '" title="delete" class="btn btn-danger btn-icon btn-sm remove"><i class="fa fa-trash"></i></a>';
             $nestedData['username'] = $val->username;
             $nestedData['email'] = $val->email;
@@ -82,7 +82,7 @@ class ShopkeeperController extends Controller
 
     public function create()
     {
-        return view('category.create');
+        return view('shopkeeper.create');
     }
 
     public function store(Request $request)

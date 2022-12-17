@@ -30,10 +30,10 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs align-items-end card-header-tabs w-100">
                             <li class="nav-item" style="padding-left: 10px;">
-                                <a href="{{route('categories')}}"><i class="fa fa-list mr-2"></i>Shopkeeper</a>
+                                <a href="{{route('shopkeepers')}}"><i class="fa fa-list mr-2"></i>Shopkeeper</a>
                             </li>
                             <li class="nav-item active" id="create_nav" style="padding-left: 10px;">
-                                <a href="{{route('category.create')}}"><i class="fa fa-list mr-2"></i>Create ShopKeeper</a>
+                                <a href="#"><i class="fa fa-list mr-2"></i>Create ShopKeeper</a>
                             </li>
                         </ul>
                     </div>

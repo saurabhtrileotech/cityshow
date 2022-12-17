@@ -30,13 +30,13 @@
           <li class="nav-item">
               <a href="{{url('categories')}}" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Category Management</p>
+                <p>Category</p>
               </a>
           </li>
           <li class="nav-item">
               <a href="{{url('sub-categories')}}" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>Sub Category Management</p>
+                <p>Sub Category</p>
               </a>
           </li>
           <li class="nav-item">
