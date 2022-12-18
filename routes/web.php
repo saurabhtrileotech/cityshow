@@ -90,6 +90,14 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::get('/product/delete/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
         Route::post('/get-shop-by-shopkeeper', [App\Http\Controllers\ProductController::class, 'getShopByShopkeeper'])->name('get-shop-by-shopkeeper');
         Route::post('/get-subcat-by-category', [App\Http\Controllers\ProductController::class, 'getSubcatByCategory'])->name('get-subcat-by-category');
+
+        Route::get('/discounts', [App\Http\Controllers\DiscountController::class, 'index'])->name('discounts');
+        Route::get('/discounts/get-list', [App\Http\Controllers\DiscountController::class, 'getList'])->name('discounts-list-ajax');
+        Route::get('/discount/create', [App\Http\Controllers\DiscountController::class, 'create'])->name('discount.create');
+        Route::post('/discount/create', [App\Http\Controllers\DiscountController::class, 'store'])->name('discount.store');
+        Route::get('/discount/edit/{id}', [App\Http\Controllers\DiscountController::class, 'edit'])->name('discount.edit');
+        Route::post('/discount/edit/{id}', [App\Http\Controllers\DiscountController::class, 'update'])->name('discount.update');
+        Route::get('/discount/delete/{id}', [App\Http\Controllers\DiscountController::class, 'delete'])->name('discount.delete');
         
     });
         

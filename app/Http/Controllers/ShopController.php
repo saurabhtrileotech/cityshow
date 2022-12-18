@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\ShopImage;
+use App\Models\Category;
 
 class ShopController extends Controller
 {
@@ -79,7 +80,8 @@ class ShopController extends Controller
         $shop_keepers = User::select('id','username','email')->whereHas('roles', function ($query) {
             $query->whereIn('name', ['shop_keeper']);
             })->get();
-        return view('shop.create',compact('shop_keepers'));
+        $categories = Category::select('id','name')->get();
+        return view('shop.create',compact('shop_keepers','categories'));
     }
 
     public function store(Request $request)
@@ -93,8 +95,9 @@ class ShopController extends Controller
             $shop = new Shop(); 
             $shop->user_id  = $request->shop_keeper_id;
             $shop->shop_name = $request->shop_name;
+            $shop->category_id = ($request->category_id) ? $request->category_id : null;
             $shop->notes = ($request->notes) ? $request->notes : null;
-            $shop->notes = ($request->address) ? $request->address : null;
+            $shop->address = ($request->address) ? $request->address : null;
             $banner_image = $request->file('banner_image');
             if ($banner_image) {
                 $ext = $banner_image->getClientOriginalExtension();

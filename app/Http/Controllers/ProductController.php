@@ -225,7 +225,7 @@ class ProductController extends Controller
         $shopkeeper_id = $request->shopkeeper_id;
         $shops = Shop::where('user_id', $shopkeeper_id)->get();
         $html = '';
-        $html .= '<option value="">Please Shop</option>';
+        //$html .= '<option value="">Please Shop</option>';
         if (count($shops) > 0) {
             foreach ($shops as $shop) { 
                 $html .= '<option value="' . $shop->id . '">' . $shop->shop_name . '</option>';
@@ -241,7 +241,7 @@ class ProductController extends Controller
         $category_id = $request->category_id;
         $sub_cats= SubCategory::where('category_id', $category_id)->get();
         $html = '';
-        $html .= '<option value="">Please Sub Category</option>';
+        // /$html .= '<option value="">Please Sub Category</option>';
         if (count($sub_cats) > 0) {
             foreach ($sub_cats as $sub_cat) { 
                 $html .= '<option value="' . $sub_cat->id . '">' . $sub_cat->name . '</option>';
