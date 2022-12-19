@@ -33,7 +33,7 @@
                                 <a href="{{route('shopkeepers')}}"><i class="fa fa-list mr-2"></i>Shopkeeper</a>
                             </li>
                             <li class="nav-item active" id="create_nav" style="padding-left: 10px;">
-                                <a href="#"><i class="fa fa-list mr-2"></i>Create ShopKeeper</a>
+                                <a href="{{route('shopkeeper.create')}}"><i class="fa fa-list mr-2"></i>Create ShopKeeper</a>
                             </li>
                         </ul>
                     </div>

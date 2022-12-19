@@ -55,6 +55,7 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::post('/category/create', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
         Route::get('/category/edit/{id}', [App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/category/edit/{id}', [App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+        Route::get('/category/view/{id}', [App\Http\Controllers\CategoryController::class, 'view'])->name('category.view');
         Route::get('/category/delete/{id}', [App\Http\Controllers\CategoryController::class, 'delete'])->name('category.delete');
 
         Route::get('/shopkeepers', [App\Http\Controllers\ShopkeeperController::class, 'index'])->name('shopkeepers');
@@ -63,6 +64,7 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::post('/shopkeeper/create', [App\Http\Controllers\ShopkeeperController::class, 'store'])->name('shopkeeper.store');
         Route::get('/shopkeeper/edit/{id}', [App\Http\Controllers\ShopkeeperController::class, 'edit'])->name('shopkeeper.edit');
         Route::post('/shopkeeper/edit/{id}', [App\Http\Controllers\ShopkeeperController::class, 'update'])->name('shopkeeper.update');
+        Route::get('/shopkeeper/view/{id}', [App\Http\Controllers\ShopkeeperController::class, 'view'])->name('shopkeeper.view');
         Route::get('/shopkeeper/delete/{id}', [App\Http\Controllers\ShopkeeperController::class, 'delete'])->name('shopkeeper.delete');
 
         Route::get('/shops', [App\Http\Controllers\ShopController::class, 'index'])->name('shops');
@@ -70,6 +72,7 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::get('/shop/create', [App\Http\Controllers\ShopController::class, 'create'])->name('shop.create');
         Route::post('/shop/create', [App\Http\Controllers\ShopController::class, 'store'])->name('shop.store');
         Route::get('/shop/edit/{id}', [App\Http\Controllers\ShopController::class, 'edit'])->name('shop.edit');
+        Route::get('/shop/view/{id}', [App\Http\Controllers\ShopController::class, 'view'])->name('shop.view');
         Route::post('/shop/edit/{id}', [App\Http\Controllers\ShopController::class, 'update'])->name('shop.update');
         Route::get('/shop/delete/{id}', [App\Http\Controllers\ShopController::class, 'delete'])->name('shop.delete');
 
@@ -78,6 +81,7 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::get('/sub-category/create', [App\Http\Controllers\SubcategoryController::class, 'create'])->name('sub-category.create');
         Route::post('/sub-category/create', [App\Http\Controllers\SubcategoryController::class, 'store'])->name('sub-category.store');
         Route::get('/sub-category/edit/{id}', [App\Http\Controllers\SubcategoryController::class, 'edit'])->name('sub-category.edit');
+        Route::get('/sub-category/view/{id}', [App\Http\Controllers\SubcategoryController::class, 'view'])->name('sub-category.view');
         Route::post('/sub-category/edit/{id}', [App\Http\Controllers\SubcategoryController::class, 'update'])->name('sub-category.update');
         Route::get('/sub-category/delete/{id}', [App\Http\Controllers\SubcategoryController::class, 'delete'])->name('sub-category.delete');
 

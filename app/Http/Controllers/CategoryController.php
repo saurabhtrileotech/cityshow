@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\CategoryImages;
+use Exception;
+use URL;
 
 class CategoryController extends Controller
 {
@@ -46,7 +48,7 @@ class CategoryController extends Controller
         $list_data_count = $sql_query->get()->count();
         foreach ($list_data as $key => $val) {
             $action = '';
-            $action .= '<a href="' . route('category.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>';
+            $action .= '<a href="' . route('category.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a><a href="' . route('category.view', ['id' => $val->id]) . '" title="view" class="btn btn-primary btn-icon btn-sm view" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
             //  $action .= '<a onclick="return deleteconfirm()" href="' . route('student.delete', array('id' => $val->id)) . '" title="delete" class="btn btn-danger btn-icon btn-sm remove"><i class="fa fa-trash"></i></a>';
             $nestedData['name'] = $val->name;
             $nestedData['action'] = $action;
@@ -112,7 +114,7 @@ class CategoryController extends Controller
             if ($category) {
                 return view('category.edit', compact('category'));
             } else {
-                return redirect()->back()->with('error', 'Camp manager not found');
+                return redirect()->back()->with('error', 'category not found found');
             }
         } catch (Exception $e) {
             return redirect()->back()
@@ -147,6 +149,34 @@ class CategoryController extends Controller
             return redirect()->route('camp_manager')
                 ->with('success', 'Camp manager deleted successfully!');
         } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong');
+        }
+    }
+
+    public function view($id)
+    {
+        try {
+            $category = Category::with(["categoryImage" => function($q){
+                $q->where('type', 0);
+            }])->find($id);
+            if ($category) {
+                if($category->categoryImage){
+                    $categoryImage = [];
+                    foreach($category->categoryImage as $key =>$image){
+                        $image = URL('/').'images/category/' . $category->id . "/".$image['image'];
+                        $categoryImage[] = $image;
+                    }
+                    $category->image =$categoryImage; 
+                    unset($category->categoryImage);
+                    // dd($category);
+                }
+                return view('category.view', compact('category'));
+            } else {
+                return redirect()->back()->with('error', 'category not  found');
+            }
+        } catch (Exception $e) {
+            dd($e);
             return redirect()->back()
                 ->with('error', 'Something went wrong');
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Exception;
 
 class ShopkeeperController extends Controller
 {
@@ -61,7 +62,7 @@ class ShopkeeperController extends Controller
         $list_data_count = $sql_query->get()->count();
         foreach ($list_data as $key => $val) {
             $action = '';
-            $action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>';
+            $action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a><a href="' . route('shopkeeper.view', ['id' => $val->id]) . '" title="view" class="btn btn-primary btn-icon btn-sm view" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
             //$action .= '<a href="' . route('shopkeeper.edit', ['id' => $val->id]) . '" title="Shops" class="btn btn-primary edit" style="margin-right:5px;">Shops</a>';
             //$action .= '<a onclick="return deleteconfirm()" href="' . route('student.delete', array('id' => $val->id)) . '" title="delete" class="btn btn-danger btn-icon btn-sm remove"><i class="fa fa-trash"></i></a>';
             $nestedData['username'] = $val->username;
@@ -144,6 +145,21 @@ class ShopkeeperController extends Controller
             $user->delete();
             return redirect()->route('camp_manager')
                 ->with('success', 'Camp manager deleted successfully!');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong');
+        }
+    }
+
+    public function view($id)
+    {
+        try {
+            $user = User::find($id);
+            if ($user) {
+                return view('shopkeeper.view', compact('user'));
+            } else {
+                return redirect()->back()->with('error', 'User not  found');
+            }
         } catch (Exception $e) {
             return redirect()->back()
                 ->with('error', 'Something went wrong');

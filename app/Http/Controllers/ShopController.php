@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\ShopImage;
+use Exception;
 
 class ShopController extends Controller
 {
@@ -56,7 +57,7 @@ class ShopController extends Controller
         $list_data_count = $sql_query->get()->count();
         foreach ($list_data as $key => $val) {
             $action = '';
-            $action .= '<a href="' . route('shop.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>';
+            $action .= '<a href="' . route('shop.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a><a href="' . route('shop.view', ['id' => $val->id]) . '" title="view" class="btn btn-primary btn-icon btn-sm view" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
             //$action .= '<a onclick="return deleteconfirm()" href="' . route('student.delete', array('id' => $val->id)) . '" title="delete" class="btn btn-danger btn-icon btn-sm remove"><i class="fa fa-trash"></i></a>';
             $nestedData['shop_name'] = $val->shop_name;
             $nestedData['shopkeeper'] = $val->shopkeeper->username;
@@ -196,6 +197,32 @@ class ShopController extends Controller
             $user->delete();
             return redirect()->route('camp_manager')
                 ->with('success', 'Camp manager deleted successfully!');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong');
+        }
+    }
+
+    public function view($id)
+    {
+        try {
+            $shop = Shop::with('shopImages')->find($id);
+            if ($shop) {
+                $shop->banner = $shop->banner?URL('/').'images/banner_image/' . $shop->user_id . "/".$shop->banner:'';
+                $shop->video = $shop->video?URL('/').'images/banner_video/' . $shop->user_id . "/".$shop->video:'';
+                if($shop->shopImages){
+                    $shopImage = [];
+                    foreach($shop->shopImages as $key =>$image){
+                        $image = URL('/').'images/image/' . $shop->id . "/".$image['image'];
+                        $shopImage[] = $image;
+                    }
+                    $shop->image =$shopImage; 
+                    unset($shop->shopImages);
+                }
+                return view('shop.view', compact('shop'));
+            } else {
+                return redirect()->back()->with('error', 'Shop not  found');
+            }
         } catch (Exception $e) {
             return redirect()->back()
                 ->with('error', 'Something went wrong');
