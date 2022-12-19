@@ -45,7 +45,7 @@
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Shopkeeper <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                       <select name="shop_keeper_id" id="shop_keeper_id" class="form-control select2" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please select ShopKeeper');">
-                        <option value="">Select Shopkeeper</option>
+                        <option></option>
                         @foreach ($shop_keepers as $shop_keeper)
                         <option {{ old('shop_keeper_id') == $shop_keeper->id ? "selected" : "" }} value="{{ $shop_keeper->id }}">{{ $shop_keeper->username }} </option>
                         @endforeach
@@ -59,7 +59,7 @@
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Category</label>
                     <div class="col-sm-8">
                        <select name="category_id" id="category_id" class="form-control select2">
-                        <option value="">Select Category</option>
+                        <option></option>
                         @foreach ($categories as $category)
                         <option {{ old('category_id') == $category->id ? "selected" : "" }} value="{{ $category->id }}">{{ $category->name}} </option>
                         @endforeach
@@ -136,7 +136,7 @@
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Shop <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                       <select name="shop_id[]" id="shop_id" class="form-control select2" multiple="multiple" oninput="setCustomValidity('');" required oninvalid="this.setCustomValidity('Please select Shop');">
-                        <option value="">Select Shop</option>
+                        <option>Select Shop</option>
                       </select>
                       @error('shop_id')
                       <div class="alert alert-danger">{{ $message }}</div>
@@ -147,7 +147,7 @@
                     <label for="shop_keeper" class="col-sm-12 col-form-label">Sub Category</label>
                     <div class="col-sm-8">
                        <select name="sub_category_id" id="sub_category_id" class="form-control select2">
-                        <option value="">Select Sub Category</option>
+                        <option></option>
                       </select>
                     </div>
                   </div>
@@ -241,7 +241,9 @@
 @push('script')
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <script>
-  $('.select2').select2();
+  $('.select2').select2({
+    placeholder : "Please select"
+  });
 
   $('#shop_keeper_id').change(function(){
         var id = $(this).val();

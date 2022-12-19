@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
+use Hash;
 
 class ShopkeeperController extends Controller
 {
@@ -88,15 +89,38 @@ class ShopkeeperController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|unique:categories',
+        $validator = $request->validate([
+            'username' => 'required',   
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required'
         ]);
+
+
         try {
-            $category = new Category();
-            $category->name  = $request->name;
-            $category->slug = str_replace("-"," ",$request->name);
-            $category->save();
-            return redirect()->route('categories')->with('success', 'Category added successfully!');
+            $user = new User();
+            $user->username =  $request->username;
+            $user->email =  $request->email;
+            $user->password = Hash::make($request->password);
+            $user->status = 1;
+            $profile_pic = $request->file('profile_picture');
+            if ($profile_pic) {
+                $ext = $profile_pic->getClientOriginalExtension();
+                $newFileName = time() . '_' . rand(0, 1000) . '.' . $ext;
+                $destinationPath = '/profile_pic/';
+                /**create folder  **/
+                $destinationPath = base_path() . '/public/profile_pic/';
+                if (!file_exists($destinationPath)) {
+                    \File::makeDirectory($destinationPath, 0777, true);
+                    chmod($destinationPath, 0777);
+                }
+                $profile_pic->move($destinationPath, $newFileName);
+                $user->profile_pic = $newFileName;
+            }
+            if($user->save()){
+               $user->assignRole('shop_keeper');
+            }
+            return redirect()->route('shopkeepers')->with('success', 'Shopkeeper added successfully!');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

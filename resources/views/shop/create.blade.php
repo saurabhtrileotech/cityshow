@@ -79,6 +79,17 @@
                   </div>
                 </div>
                 <div class="col-md-6">
+                 <div class="form-group row">
+                    <label for="category_id" class="col-sm-12 col-form-label">Category</label>
+                    <div class="col-sm-8">
+                      <select name="category_id" class="form-control select2">
+                        <option value="">Select Category</option>
+                        @foreach ($categories as $category)
+                        <option {{ old('category_id') == $category->id ? "selected" : "" }} value="{{ $category->id }}">{{ $category->name }} </option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
                   <div class="form-group row">
                     <label for="banner_video" class="col-sm-12 col-form-label">Video</label>
                     <div class="col-sm-8">
@@ -119,7 +130,9 @@
 @push('script')
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 <script>
-  $('.select2').select2();
+  $('.select2').select2({
+    placeholder : "Please select"
+  });
 </script>
 <!-- <script src="http://maps.googleapis.com/maps/api/js?libraries=places" type="text/javascript"></script>
 
