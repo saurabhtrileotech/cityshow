@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Helpers\Api\ResponseHelper;
 
 class Handler extends ExceptionHandler
 {
@@ -37,5 +38,28 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+       /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        $ResponseHelper = new ResponseHelper();
+        if ($this->isHttpException($exception)) {
+            if ($exception->getStatusCode() == 404) {
+                return response()->view("Error.404");
+            }
+        }
+        if ($exception->getMessage() == "Unauthenticated." && $request->is('api/*')) {
+            return $ResponseHelper->error($exception->getMessage(), 401);
+        }
+        return parent::render($request, $exception);
     }
 }

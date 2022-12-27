@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
+use Exception;
 
 class ShopkeeperController extends Controller
 {
