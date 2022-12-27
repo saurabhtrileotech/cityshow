@@ -64,7 +64,6 @@ class UserController extends Controller
             }
             if($user->save()){
                 $user->assignRole('shop_keeper');
-                $user->assignRole('customer');
                 return $this->responseHelper->success('User created successfully',$user);
             }else{
                 return $this->responseHelper->error('Issue in regster please contact to admin');
