@@ -235,12 +235,12 @@ class UserController extends Controller
             if (!$getUser) {
                 return $this->responseHelper->error(trans('api_messages.error.USER_NOT_FOUND'));
             }
-            $validator = Validator::make($request->all(), [
-                'username' => 'required',
-            ]);
-            if ($validator->fails()) {
-                return $this->responseHelper->error($validator->messages()->first());
-            }
+            // $validator = Validator::make($request->all(), [
+            //     'username' => 'required',
+            // ]);
+            // if ($validator->fails()) {
+            //     return $this->responseHelper->error($validator->messages()->first());
+            // }
 
             $getUser->first_name = isset($request->first_name) ? $request->first_name : $getUser->first_name;
             $getUser->lastname = isset($request->last_name) ?  $request->last_name : $getUser->last_name;
