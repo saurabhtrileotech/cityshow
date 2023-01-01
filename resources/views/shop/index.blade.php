@@ -2,6 +2,8 @@
 @section('title','Shopkeeper')
 @section('content')
   @push('style')
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">

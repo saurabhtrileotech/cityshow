@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\CategoryImages;
+use Exception;
+use URL;
 
 class SubcategoryController extends Controller
 {
@@ -56,7 +58,7 @@ class SubcategoryController extends Controller
         $list_data_count = $sql_query->get()->count();
         foreach ($list_data as $key => $val) {
             $action = '';
-            $action .= '<a href="' . route('sub-category.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>';
+            $action .= '<a href="' . route('sub-category.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a><a href="' . route('sub-category.view', ['id' => $val->id]) . '" title="view" class="btn btn-primary btn-icon btn-sm view" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
             //  $action .= '<a onclick="return deleteconfirm()" href="' . route('student.delete', array('id' => $val->id)) . '" title="delete" class="btn btn-danger btn-icon btn-sm remove"><i class="fa fa-trash"></i></a>';
             $nestedData['category'] = $val->category->name;
             $nestedData['name'] = $val->name;
@@ -160,6 +162,32 @@ class SubcategoryController extends Controller
             $user->delete();
             return redirect()->route('camp_manager')
                 ->with('success', 'Camp manager deleted successfully!');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Something went wrong');
+        }
+    }
+
+    public function view($id)
+    {
+        try {
+            $subCategory = SubCategory::with(["subCategoryImage" => function($q){
+                $q->where('type', 1);
+            }])->find($id);
+            if ($subCategory) {
+                $subCategoryImage = [];
+                if($subCategory->subCategoryImage){
+                    foreach($subCategory->subCategoryImage as $key =>$image){
+                        $image = URL('images/subcategory/' . $subCategory->id . "/".$image['image']);
+                        $subCategoryImage[] = $image;
+                    }
+                    $subCategory->image =$subCategoryImage; 
+                }
+                unset($subCategory->subCategoryImage);
+                return view('sub_category.view', compact('subCategory'));
+            } else {
+                return redirect()->back()->with('error', 'category not  found');
+            }
         } catch (Exception $e) {
             return redirect()->back()
                 ->with('error', 'Something went wrong');

@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Support\FullVideo;
+use App\Models\ShopImage;
 
 class Shop extends Model
 {
@@ -28,7 +27,10 @@ class Shop extends Model
         return ($this->video) ? asset($path.$this->video) : "";
     }
     public function getBannerImageAttribute(){
-        $path =  '/public/banner_image/' . $this->user_id. "/";
+        $path =  '/banner_image/' . $this->user_id. "/";
         return ($this->banner) ? asset($path.$this->banner) : "";
+    }
+    public function shopImages(){
+        return $this->hasMany(ShopImage::class);
     }
 }
