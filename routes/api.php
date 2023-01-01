@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,5 +20,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', [UserController::class, 'register'])->name('register');
-Route::post('login', [UserController::class, 'login'])->name('login');
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login']);
+Route::post('send-forgot-password-otp', [UserController::class, 'sendForgotPasswordOtp']);
+Route::post('verify-otp', [UserController::class, 'verifyOtp']);
+Route::post('forgot-password', [UserController::class, 'forgotPassword']);
+
+Route::group(['middleware' => ['auth:api']], function () {
+ Route::post('update-profile', [UserController::class, 'updateProfile']);
+ 
+});
