@@ -105,7 +105,7 @@ class UserController extends Controller
                 $user->device_type = isset($request->device_type) ? $request->device_type : null;
                 $user->device_token = isset($request->device_token) ? $request->device_token : null;
                 $user->save();
-                $user->role = $user->roles()->get();
+                $user->role = $user->roles()->get()->toArray();
                 $data = $user->toArray();
                 //$data['other_details'] = $this->extraDetails($role);
                 //$data = $this->removeNullValue($data);  
