@@ -180,7 +180,9 @@ class ShopkeeperController extends Controller
         try {
             $user = User::find($id);
             if ($user) {
+                $user->profile_pic = url('profile_pic/'.$user->profile_pic);
                 return view('shopkeeper.view', compact('user'));
+
             } else {
                 return redirect()->back()->with('error', 'User not  found');
             }

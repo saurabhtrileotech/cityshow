@@ -14,10 +14,23 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\User', 'shopkeeper_id', 'id');
     }
-
-    public function Shop()
+    public function Category()
     {
-        return $this->belongsTo('App\Models\Shop', 'shop_id', 'id');
+        return $this->belongsTo('App\Models\Category', 'cat_id', 'id');
+    }
+
+    public function Sub_Category()
+    {
+        return $this->belongsTo('App\Models\SubCategory', 'subcat_id', 'id');
+    }
+
+    public function Product_Image()
+    {
+        return $this->hasMany('App\Models\ProductImage','product_id');
+    }
+    public function Product_Shop()
+    {
+        return $this->hasMany('App\Models\ShopProduct','product_id');
     }
     
 }

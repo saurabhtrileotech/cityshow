@@ -91,9 +91,11 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::post('/product/create', [App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
         Route::get('/product/edit/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
         Route::post('/product/edit/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
-        Route::get('/product/delete/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
+        Route::delete('/product/delete/{id}', [App\Http\Controllers\ProductController::class, 'delete'])->name('product.delete');
         Route::post('/get-shop-by-shopkeeper', [App\Http\Controllers\ProductController::class, 'getShopByShopkeeper'])->name('get-shop-by-shopkeeper');
         Route::post('/get-subcat-by-category', [App\Http\Controllers\ProductController::class, 'getSubcatByCategory'])->name('get-subcat-by-category');
+        Route::get('/product/view/{id}', [App\Http\Controllers\ProductController::class, 'view'])->name('product.view');
+
 
         Route::get('/discounts', [App\Http\Controllers\DiscountController::class, 'index'])->name('discounts');
         Route::get('/discounts/get-list', [App\Http\Controllers\DiscountController::class, 'getList'])->name('discounts-list-ajax');
@@ -102,6 +104,8 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::get('/discount/edit/{id}', [App\Http\Controllers\DiscountController::class, 'edit'])->name('discount.edit');
         Route::post('/discount/edit/{id}', [App\Http\Controllers\DiscountController::class, 'update'])->name('discount.update');
         Route::get('/discount/delete/{id}', [App\Http\Controllers\DiscountController::class, 'delete'])->name('discount.delete');
+        Route::get('/discount/view/{id}', [App\Http\Controllers\DiscountController::class, 'view'])->name('discount.view');
+
         
     });
         

@@ -3,6 +3,9 @@
 'City-Show | Shop-View '
 @endsection
 @section('content')
+@push('style')
+<link rel="stylesheet" href="{{ asset('plugins/bootstrap-slider/css/bootstrap-slider.min.css') }}">
+@endpush
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -60,7 +63,7 @@
                                 <label for="role">Address</label>
                             </div>
                             <div class="col-sm-3">
-                                <span>{{$shop->Address?$shop->Address:'-'}}</span>
+                                <span>{{$shop->address?$shop->address:'-'}}</span>
                             </div>
                             <div class="col-sm-3">
                                 <label for="role">Notes</label>
@@ -73,22 +76,35 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <span>
-                                        <video src="{{$shop->video}}" alt="Video"> </video>
-                                </span>
+                                <video style="height: 300px;
+    width: 222px;" controls>
+  <source src="{{$shop->video}}" type="video/mp4">
+</video>
                             </div>
                             <div class="col-sm-3 pt-2">
-                                <label for="role">Image</label>
+                                <label for="role">images</label>
                             </div>
 
-                            <div class="col-sm-3">
-                                <span>
-                                    @if(!empty($shop->image))
-                                      @foreach($shop->image as $image)
-                                        <img src="{{$image}}" alt="shop image">
-                                      @endforeach
-                                    @endif
-                                </span>
+                           <div class="col-sm-3">
+                            @if(!empty($shop->images))
+                                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach($shop->images as $image)
+                                        <div class="carousel-item active">
+                                            <img src="{{$image}}" class="d-block w-100">
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                @endif
                             </div>
                     </div>
                     </div>
@@ -101,3 +117,6 @@
 
 </div>
 @endsection
+@push('script')
+<script src="{{ asset('plugins/bootstrap-slider/bootstrap-slider.min.js') }}"></script>
+@endpush

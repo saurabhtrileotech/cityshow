@@ -50,6 +50,12 @@
                             <div class="col-sm-3">
                                 <span>{{$user->email?$user->email:'-'}}</span>
                             </div>
+                            <div class="col-sm-3">
+                                <label for="role">Profile Image</label>
+                            </div>
+                            <div class="col-sm-3">
+                            <img src="{{$user->profile_pic}}" alt="Profile Image">
+                            </div>
                     </div>
                     </div>
                 </div>

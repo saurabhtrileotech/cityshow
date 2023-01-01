@@ -2,10 +2,14 @@
 @section('title','Shopkeeper')
 @section('content')
   @push('style')
+      <meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
+
   @endpush
 
   <div class="container-fluid">
@@ -64,6 +68,8 @@
    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
     <!--server side roles table script-->
     <script src="{{ asset('dist/js/product.js') }}"></script>
 @endpush

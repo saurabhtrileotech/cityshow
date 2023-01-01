@@ -178,7 +178,7 @@ class SubcategoryController extends Controller
                 $subCategoryImage = [];
                 if($subCategory->subCategoryImage){
                     foreach($subCategory->subCategoryImage as $key =>$image){
-                        $image = URL('/').'images/subcategory/' . $subCategory->id . "/".$image['image'];
+                        $image = URL('images/subcategory/' . $subCategory->id . "/".$image['image']);
                         $subCategoryImage[] = $image;
                     }
                     $subCategory->image =$subCategoryImage; 
@@ -189,7 +189,6 @@ class SubcategoryController extends Controller
                 return redirect()->back()->with('error', 'category not  found');
             }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()
                 ->with('error', 'Something went wrong');
         }
