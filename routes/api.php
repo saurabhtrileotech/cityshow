@@ -31,9 +31,15 @@ Route::group(['middleware' => ['auth:api']], function () {
  Route::post('update-profile', [UserController::class, 'updateProfile']);
  Route::post('shops',[ShopController::class, 'shops']);
  Route::post('shop-add',[ShopController::class, 'shopAdd']);
+ /**categories route start */
  Route::group(['prefix' => 'categories'],function(){
     Route::get('/get-list', [App\Http\Controllers\Api\CategoryController::class, 'list']);
  });
-
- 
+ /**categories route end */
+ /**product route start */
+ Route::group(['prefix' => 'product'],function(){
+    Route::delete('/{id}', [App\Http\Controllers\Api\ProductController::class, 'delete']);
+ });
+ /**product route end */
 });
+
