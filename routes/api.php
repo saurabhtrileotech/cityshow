@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ShopController;
-
+use App\Http\Controllers\Api\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +31,9 @@ Route::group(['middleware' => ['auth:api']], function () {
  Route::post('update-profile', [UserController::class, 'updateProfile']);
  Route::post('shops',[ShopController::class, 'shops']);
  Route::post('shop-add',[ShopController::class, 'shopAdd']);
+ Route::group(['prefix' => 'categories'],function(){
+    Route::get('/get-list', [App\Http\Controllers\Api\CategoryController::class, 'list']);
+ });
+
  
 });

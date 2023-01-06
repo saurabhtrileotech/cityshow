@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
 use Hash;
-use Exception;
 
 class ShopkeeperController extends Controller
 {

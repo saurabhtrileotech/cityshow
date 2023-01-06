@@ -15,6 +15,6 @@ class SubCategory extends Model
         return $this->belongsTo('App\Models\Category', 'category_id', 'id');
     }
     public function subCategoryImage(){
-        return $this->hasMany(CategoryImages::class,'category_id');
+        return $this->hasMany(CategoryImages::class,'category_id')->where('type','=', 1);
     }
 }
