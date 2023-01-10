@@ -29,7 +29,7 @@ class CategoryController extends Controller
             $categories =  Category::with('subCategory','categoryImage');
             $categoryCount =  $categories->count();
             if($categoryCount <= 0){
-                $response['category'] = [];
+                $response['categories'] = [];
                 return $this->responseHelper->success('Category not found', $response);   
             }
 

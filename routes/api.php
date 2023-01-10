@@ -43,8 +43,12 @@ Route::group(['middleware' => ['auth:api']], function () {
    Route::post('/create', [ProductController::class, 'store']);
    Route::post('/update', [ProductController::class, 'update']);
    Route::delete('/{id}', [ProductController::class, 'delete']);
+   Route::get('details/{id}', [ProductController::class, 'getDetails']);
+   Route::post('/add-to-favourite', [ProductController::class, 'addToFavourite']);
+   Route::get('get-favourite-list', [ProductController::class, 'getFavouriteList']);
 });
 /**product route end */
 
 });
+
 
