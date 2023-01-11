@@ -48,7 +48,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->status = 1;
             $user->address =  isset($request->address) ? $request->address : null;
-            $profile_pic = $request->file('profile_picture');
+            $profile_pic = $request->file('profile_pic');
             if ($profile_pic) {
                 $ext = $profile_pic->getClientOriginalExtension();
                 $newFileName = time() . '_' . rand(0, 1000) . '.' . $ext;
@@ -64,12 +64,19 @@ class UserController extends Controller
             }
             if($user->save()){
                 $user->assignRole('shop_keeper');
-                return $this->responseHelper->success('User created successfully',$user);
+                $token = $user->createToken('MyApp')->accessToken;
+                $data =  User::where('id',$user->id)->first();
+                $data->role = $user->roles()->get()->toArray();
+                $data->profile_pic = $data->profile_pic?url('/public/profile_pic/'.$newFileName):"";
+                $response['user'] = $data->toArray();
+                $response['token'] = $token;
+                return $this->responseHelper->success('User created successfully',$response);
             }else{
                 return $this->responseHelper->error('Issue in regster please contact to admin');
             }
 
         } catch(\Exception $e){ 
+            dd($e);
             return $this->responseHelper->error('Something went wrong');
         }
         
@@ -106,6 +113,7 @@ class UserController extends Controller
                 $user->device_token = isset($request->device_token) ? $request->device_token : null;
                 $user->save();
                 $user->role = $user->roles()->get()->toArray();
+                $user->profile_pic = $user->profile_pic?url('/public/profile_pic/'.$user->profile_pic):"";
                 $data = $user->toArray();
                 //$data['other_details'] = $this->extraDetails($role);
                 //$data = $this->removeNullValue($data);  
@@ -117,6 +125,7 @@ class UserController extends Controller
                 return $this->responseHelper->error('You have entered an invalid password.');
             }
         } catch (\Exception $e) {
+            dd($e);
             return $this->responseHelper->error('Something went wrong');
             
         } 
