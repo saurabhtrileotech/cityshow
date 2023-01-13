@@ -26,6 +26,44 @@ class ProductController extends Controller
         $this->commonHelper = $commonHelper;
     }
 
+
+    public function productList(Request $request){
+        try{
+             $products = Product::with('Product_Image');
+             $totalCount = $products->count();
+         
+          if($totalCount > 1){
+ 
+             if(isset($request->page) && isset($request->pagination)){
+                 
+                 $limit = isset($request->limit) ? $request->limit : 10;
+                 $page = ($request->page > 0) ? $request->page : 1; 
+                 $products = $products->limit($limit)->offset(($page - 1) * $limit)->get()->toArray();
+ 
+                 $response['products'] = $products;
+                 $response['total_counts'] = $totalCount;
+                 $response['total_pages'] = $totalCount != 0 ? ceil($totalCount / $limit) : 0;
+ 
+                 return $this->responseHelper->success('Products gets successfully', $response);
+             }else{
+                 $shops = $products->get()->toArray();
+                 $response['products'] = $products;
+ 
+                 return $this->responseHelper->success('Products gets successfully', $response);
+             }
+ 
+         }else{
+             $response['products'] = [];
+             return $this->responseHelper->success('No Products found', $response);
+         }
+ 
+         }
+         catch(Exception $e){
+             return $this->responseHelper->error($e->getMessage());
+         }
+ 
+     }
+
     public function getDetails($id){
         try{
             $product = Product::where('id',$id)->first();

@@ -97,7 +97,7 @@ class ShopController extends Controller
                 $shop->notes =  $request->notes;
             }
             if(isset($request->address)){
-                $shop->notes =  $request->address;
+                $shop->address =  $request->address;
             }
             $banner_image = $request->file('banner_image');
             if ($banner_image) {
