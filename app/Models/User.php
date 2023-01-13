@@ -48,7 +48,7 @@ class User extends Authenticatable
     protected $appends = ['full_profile_image'];
 
     public function getFullProfileImageAttribute(){
-        $path =  '/public/profile_pic/';
+        $path =  '/profile_pic/';
         return ($this->profile_pic) ? asset($path.$this->profile_pic) : "";
     }
 }
