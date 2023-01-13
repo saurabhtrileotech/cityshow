@@ -7,9 +7,11 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Helpers\Api\ResponseHelper;
 use App\Helpers\Api\CommonHelper;
+use App\Models\Favourite;
 use App\Models\Shop;
 use App\Models\ShopProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -24,6 +26,41 @@ class ProductController extends Controller
         $this->commonHelper = $commonHelper;
     }
 
+    public function getDetails($id){
+        try{
+            $product = Product::where('id',$id)->first();
+            if($product){
+                $product_images = [];
+                $productImages = ProductImage::where('product_id',$product->id)->get();
+                    if(!empty($productImages)){
+                        foreach($productImages as  $oldImage){
+                            $product_images[] = url('/images/product/' . $product->id . "/".$oldImage->image);
+                        }
+                    }
+                $product->product_images = $product_images;
+                $product_shops = [];
+                $productShops =  ShopProduct::where('product_id',$product->id)->get();
+                if(!empty($productShops)){
+                    foreach($productShops as  $oldShop){
+                        $productShopName = Shop::select('shop_name')->where('id',$oldShop['shop_id'])->first();
+                        if($productShopName){
+                            $product_shops[] =  $productShopName->shop_name;
+                        }
+                    }
+                }
+                $product->product_shops = $product_shops;
+
+
+            return $this->responseHelper->success('Product details successfully!',$product);
+            }
+            return $this->responseHelper->error(trans('Product Not Found!'));
+        }catch (\Exception $e) {
+                return $this->responseHelper->error('Something went wrong');
+        }
+        
+    }
+
+    //create Product API
     public function store(Request $request)
     {
         try {
@@ -113,6 +150,7 @@ class ProductController extends Controller
         }
     }
 
+    //update product api
     public function update(Request $request)
     {
         try {
@@ -236,6 +274,80 @@ class ProductController extends Controller
             }
             return $this->responseHelper->error(trans('Product Not Found!'));
         } catch (\Exception $e) {
+            return $this->responseHelper->error('Something went wrong');
+        }
+    }
+
+    public  function addToFavourite(Request $request){
+        try{
+            $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$request->id)->first();
+            if($isFavourite){
+                $isFavourite->delete();
+                return $this->responseHelper->success(trans('Product remove from  Favourite!'));
+            }
+            $isFavourite = new Favourite();
+            $isFavourite->user_id = Auth::user()->id;
+            $isFavourite->product_id = $request->id;
+            $isFavourite->save();
+            return $this->responseHelper->success(trans('Product added in your Favourite!'));
+
+        }catch(\Exception $e){
+            return $this->responseHelper->error('Something went wrong');
+        }
+    }
+
+    public  function getFavouriteList(Request $request){
+        try{
+            $isFavouriteIds =  Favourite::where('user_id',Auth::user()->id)->pluck('product_id');
+            if(empty($isFavouriteIds)){
+                return $this->responseHelper->error(trans('Favourite product not Found!'));
+            }
+            $products =  Product::whereIn('id',$isFavouriteIds);
+            $productsCount =  $products->count();
+            if($productsCount <= 0){
+                $response['products'] = [];
+                return $this->responseHelper->success('Favourite product not Found!', $response);   
+            }
+
+                if(isset($request->page) && isset($request->pagination)){
+                    $limit = isset($request->limit) ? $request->limit : 10;
+                    $page = ($request->page > 0) ? $request->page : 1; 
+                    $products = $products->limit($limit)->offset(($page - 1) * $limit)->get()->toArray();
+    
+                    $response['total_counts'] = $productsCount;
+                    $response['total_pages'] = $productsCount != 0 ? ceil($productsCount / $limit) : 0;
+    
+                }else{
+                    $products = $products->get()->toArray();
+                }
+
+                foreach($products as $key => $product){
+                    $product_images = [];
+                    $productImages = ProductImage::where('product_id',$product['id'])->get();
+                        if(!empty($productImages)){
+                            foreach($productImages as  $oldImage){
+                                $product_images[] = url('/images/product/' . $product['id'] . "/".$oldImage->image);
+                            }
+                        }
+                    $products[$key]['product_images'] = $product_images;
+                    $product_shops = [];
+                    $productShops =  ShopProduct::where('product_id',$product['id'])->get();
+                    if(!empty($productShops)){
+                        foreach($productShops as  $oldShop){
+                            $productShopName = Shop::select('shop_name')->where('id',$oldShop['shop_id'])->first();
+                            if($productShopName){
+                                $product_shops[] =  $productShopName->shop_name;
+                            }
+                        }
+                    }
+                    $products[$key]['product_shops'] = $product_shops;
+                }
+                $response['products'] = $products;
+
+                return $this->responseHelper->success('Products gets successfully', $response);                
+
+
+        }catch(\Exception $e){
             return $this->responseHelper->error('Something went wrong');
         }
     }
