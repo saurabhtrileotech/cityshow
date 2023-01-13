@@ -48,7 +48,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->status = 1;
             $user->address =  isset($request->address) ? $request->address : null;
-            $profile_pic = $request->file('profile_picture');
+            $profile_pic = $request->file('profile_pic');   
             if ($profile_pic) {
                 $ext = $profile_pic->getClientOriginalExtension();
                 $newFileName = time() . '_' . rand(0, 1000) . '.' . $ext;
@@ -64,6 +64,9 @@ class UserController extends Controller
             }
             if($user->save()){
                 $user->assignRole('shop_keeper');
+
+                // get user profile
+                $user = User::find($user->id);
                 return $this->responseHelper->success('User created successfully',$user);
             }else{
                 return $this->responseHelper->error('Issue in regster please contact to admin');

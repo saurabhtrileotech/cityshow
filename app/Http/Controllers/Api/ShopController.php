@@ -30,7 +30,7 @@ class ShopController extends Controller
             $shops = Shop::with('shop_images')->where('user_id',Auth::user()->id)->where('status',1);
             $totalCount = $shops->count();
         
-         if($totalCount > 1){
+         if($totalCount > 0){
 
             if(isset($request->page) && isset($request->pagination)){
                 

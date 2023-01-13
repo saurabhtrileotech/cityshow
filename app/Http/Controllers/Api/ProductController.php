@@ -33,7 +33,7 @@ class ProductController extends Controller
             'shop_id.*' => 'required',
             'product_name' => 'required',
             'product_price' => 'required|numeric|min:0|not_in:0',
-            'images.*' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:1024',
+            'images.*' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
         ],['shop_id.*.required' => "Please select any one shop."]);
         if($validated->fails()){
             return $this->responseHelper->error($validated->errors()->first());

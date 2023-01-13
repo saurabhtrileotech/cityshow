@@ -44,4 +44,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['full_profile_image'];
+
+    public function getFullProfileImageAttribute(){
+        $path =  '/public/profile_pic/';
+        return ($this->profile_pic) ? asset($path.$this->profile_pic) : "";
+    }
 }
