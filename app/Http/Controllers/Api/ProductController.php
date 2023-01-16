@@ -155,7 +155,7 @@ class ProductController extends Controller
                         $image->move($destinationPath, $newFileName);
                         $product_image->image = $newFileName;
                         $product_image->save();
-                        $product_images[] = url('/images/product/' . $product->id . "/".$product_image->image);
+                        //$product_images[] = url('/images/product/' . $product->id . "/".$product_image->image);
                     }
                     
                 }
@@ -176,12 +176,11 @@ class ProductController extends Controller
                     }
 
                 }
-                $product->product_shops = $product_shops;
-
-
-
+                //$product->product_shops = $product_shops;
+                $product_data = Product::with('ProductImage','Product_Shop')->where('id',$product->id)->first()->toArray();
+                return $this->responseHelper->success('Product added successfully!',$product_data);
             }
-            return $this->responseHelper->success('Product added successfully!',$product);
+            
         } catch (Exception $e) {
             return $this->responseHelper->error('Something went wrong');
         }
