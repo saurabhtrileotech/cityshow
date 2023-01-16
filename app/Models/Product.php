@@ -28,6 +28,10 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductImage','product_id');
     }
+    public function ProductImage()
+    {
+        return $this->hasMany('App\Models\ProductImage','product_id');
+    }
     public function Product_Shop()
     {
         return $this->hasMany('App\Models\ShopProduct','product_id');

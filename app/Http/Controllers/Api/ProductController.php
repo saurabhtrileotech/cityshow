@@ -29,7 +29,7 @@ class ProductController extends Controller
 
     public function productList(Request $request){
         try{
-             $products = Product::with('Product_Image');
+             $products = Product::with('ProductImage');
              $totalCount = $products->count();
          
           if($totalCount > 1){
