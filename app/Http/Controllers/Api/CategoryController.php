@@ -26,7 +26,7 @@ class CategoryController extends Controller
 
     public function list(Request $request){
         try{
-            $categories =  Category::with('categoryImage','subCategory','shops');
+            $categories =  Category::with('subCategory','shops');
             $categoryCount =  $categories->count();
             if($categoryCount <= 0){
                 $response['categories'] = [];
