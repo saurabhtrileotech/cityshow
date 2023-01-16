@@ -9,10 +9,10 @@ class ShopImage extends Model
 {
     use HasFactory;
 
-    protected $appends = ['full_image'];
+    protected $appends = ['image_url'];
 
-    public function getFullImageAttribute(){
-        $path =  '/public/images/' . $this->shop_id . "/";
+    public function getImageUrlAttribute(){
+        $path =  '/images/' . $this->shop_id . "/";
         return ($this->image) ? asset($path.$this->image) : "";
     }
 }
