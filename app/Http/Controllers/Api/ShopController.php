@@ -32,7 +32,7 @@ class ShopController extends Controller
         
          if($totalCount > 0){
 
-            if(isset($request->page) && isset($request->pagination)){
+            if(isset($request->pagination) ||  $request->pagination != 'false'){
                 
                 $limit = isset($request->limit) ? $request->limit : 10;
                 $page = ($request->page > 0) ? $request->page : 1; 
