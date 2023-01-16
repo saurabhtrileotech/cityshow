@@ -65,34 +65,13 @@ class ProductController extends Controller
 
     public function getDetails($id){
         try{
-            $product = Product::where('id',$id)->first();
+            $product = Product::with('ProductImage','Product_Shop')->where('id',$id)->first()->toArray();
             if($product){
-                $product_images = [];
-                $productImages = ProductImage::where('product_id',$product->id)->get();
-                    if(!empty($productImages)){
-                        foreach($productImages as  $oldImage){
-                            $product_images[] = url('/images/product/' . $product->id . "/".$oldImage->image);
-                        }
-                    }
-                $product->product_images = $product_images;
-                $product_shops = [];
-                $productShops =  ShopProduct::where('product_id',$product->id)->get();
-                if(!empty($productShops)){
-                    foreach($productShops as  $oldShop){
-                        $productShopName = Shop::select('shop_name')->where('id',$oldShop['shop_id'])->first();
-                        if($productShopName){
-                            $product_shops[] =  $productShopName->shop_name;
-                        }
-                    }
-                }
-                $product->product_shops = $product_shops;
-
-
             return $this->responseHelper->success('Product details successfully!',$product);
             }
             return $this->responseHelper->error(trans('Product Not Found!'));
         }catch (\Exception $e) {
-                return $this->responseHelper->error('Something went wrong');
+            return $this->responseHelper->error('Something went wrong');
         }
         
     }
