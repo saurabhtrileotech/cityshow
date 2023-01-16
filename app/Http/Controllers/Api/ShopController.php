@@ -27,7 +27,7 @@ class ShopController extends Controller
     public function shops(Request $request){
        try{
       
-            $shops = Shop::with('shop_images')->where('user_id',Auth::user()->id)->where('status',1);
+            $shops = Shop::with('shop_images','products')->where('user_id',Auth::user()->id)->where('status',1);
             $totalCount = $shops->count();
         
          if($totalCount > 0){
