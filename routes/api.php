@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
   /**product route start */
   Route::group(['prefix' => 'product'],function(){
+   Route::post('/list', [ProductController::class, 'ProductList']);
    Route::post('/create', [ProductController::class, 'store']);
    Route::post('/update', [ProductController::class, 'update']);
    Route::delete('/{id}', [ProductController::class, 'delete']);
