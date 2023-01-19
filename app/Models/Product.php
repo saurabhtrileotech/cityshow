@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Favourite;
+use Auth;
 
 class Product extends Model
 {
     use HasFactory,SoftDeletes;
+
+    protected $appends = ['is_fav'];
 
     public function Shopkeeper()
     {
@@ -35,6 +39,14 @@ class Product extends Model
     public function Product_Shop()
     {
         return $this->hasMany('App\Models\ShopProduct','product_id');
+    }
+    public function getIsFavAttribute(){
+        $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$this->id)->first();
+        if($isFavourite){
+            return 1;
+        }else{
+            return 0;
+        }
     }
     
 }

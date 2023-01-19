@@ -299,7 +299,7 @@ class ProductController extends Controller
 
     public  function addToFavourite(Request $request){
         try{
-            $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$request->id)->first();
+            $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$request->product_id)->first();
             if($isFavourite){
                 $isFavourite->delete();
                 return $this->responseHelper->success(trans('Product remove from  Favourite!'));
