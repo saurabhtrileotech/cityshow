@@ -73,7 +73,6 @@ class UserController extends Controller
             }
 
         } catch(\Exception $e){ 
-            dd($e);
             return $this->responseHelper->error('Something went wrong');
         }
         
@@ -110,7 +109,7 @@ class UserController extends Controller
                 $user->device_token = isset($request->device_token) ? $request->device_token : null;
                 $user->save();
                 $user->role = $user->roles()->get()->toArray();
-                $user->profile_pic = $user->profile_pic?url('/public/profile_pic/'.$user->profile_pic):"";
+                //$user->profile_pic = $user->profile_pic?url('/public/profile_pic/'.$user->profile_pic):"";
                 $data = $user->toArray();
                 //$data['other_details'] = $this->extraDetails($role);
                 //$data = $this->removeNullValue($data);  
@@ -119,10 +118,10 @@ class UserController extends Controller
                 return $this->responseHelper->success('User created successfully',$response);
 
             } else {
-                return $this->responseHelper->error('You have entered an invalid password.');
+                $response = (object)array();
+                return $this->responseHelper->success('You have entered an invalid password.',$response);
             }
         } catch (\Exception $e) {
-            dd($e);
             return $this->responseHelper->error('Something went wrong');
             
         } 
