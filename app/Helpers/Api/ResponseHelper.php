@@ -19,7 +19,7 @@ class ResponseHelper
             'status' => $statusCode,
             "message" => $errorMessage,
             "success" => $success,
-            "data" => $data
+            // "data" => $data
         ], $statusCode);
     }
 
