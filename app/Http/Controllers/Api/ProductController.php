@@ -29,7 +29,11 @@ class ProductController extends Controller
 
     public function productList(Request $request){
         try{
+             $category_id = isset($request->category_id) ? $request->category_id : '';
              $products = Product::with('ProductImage');
+             if(!empty($category_id )){
+                $products = $products->where('cat_id',$category_id);
+             }
              $totalCount = $products->count();
          
           if($totalCount > 1){
@@ -302,7 +306,7 @@ class ProductController extends Controller
             }
             $isFavourite = new Favourite();
             $isFavourite->user_id = Auth::user()->id;
-            $isFavourite->product_id = $request->id;
+            $isFavourite->product_id = $request->product_id;
             $isFavourite->save();
             return $this->responseHelper->success(trans('Product added in your Favourite!'));
 
@@ -317,7 +321,7 @@ class ProductController extends Controller
             if(empty($isFavouriteIds)){
                 return $this->responseHelper->error(trans('Favourite product not Found!'));
             }
-            $products =  Product::whereIn('id',$isFavouriteIds);
+            $products =  Product::with('ProductImage','Product_Shop')->whereIn('id',$isFavouriteIds);
             $productsCount =  $products->count();
             if($productsCount <= 0){
                 $response['products'] = [];
@@ -336,27 +340,27 @@ class ProductController extends Controller
                     $products = $products->get()->toArray();
                 }
 
-                foreach($products as $key => $product){
-                    $product_images = [];
-                    $productImages = ProductImage::where('product_id',$product['id'])->get();
-                        if(!empty($productImages)){
-                            foreach($productImages as  $oldImage){
-                                $product_images[] = url('/images/product/' . $product['id'] . "/".$oldImage->image);
-                            }
-                        }
-                    $products[$key]['product_images'] = $product_images;
-                    $product_shops = [];
-                    $productShops =  ShopProduct::where('product_id',$product['id'])->get();
-                    if(!empty($productShops)){
-                        foreach($productShops as  $oldShop){
-                            $productShopName = Shop::select('shop_name')->where('id',$oldShop['shop_id'])->first();
-                            if($productShopName){
-                                $product_shops[] =  $productShopName->shop_name;
-                            }
-                        }
-                    }
-                    $products[$key]['product_shops'] = $product_shops;
-                }
+                // foreach($products as $key => $product){
+                //     $product_images = [];
+                //     $productImages = ProductImage::where('product_id',$product['id'])->get();
+                //         if(!empty($productImages)){
+                //             foreach($productImages as  $oldImage){
+                //                 $product_images[] = url('/images/product/' . $product['id'] . "/".$oldImage->image);
+                //             }
+                //         }
+                //     $products[$key]['product_images'] = $product_images;
+                //     $product_shops = [];
+                //     $productShops =  ShopProduct::where('product_id',$product['id'])->get();
+                //     if(!empty($productShops)){
+                //         foreach($productShops as  $oldShop){
+                //             $productShopName = Shop::select('shop_name')->where('id',$oldShop['shop_id'])->first();
+                //             if($productShopName){
+                //                 $product_shops[] =  $productShopName->shop_name;
+                //             }
+                //         }
+                //     }
+                //     $products[$key]['product_shops'] = $product_shops;
+                // }
                 $response['products'] = $products;
 
                 return $this->responseHelper->success('Products gets successfully', $response);                
