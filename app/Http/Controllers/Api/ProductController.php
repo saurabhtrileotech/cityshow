@@ -73,7 +73,7 @@ class ProductController extends Controller
 
     public function getDetails($id){
         try{
-            $product = Product::with('ProductImage','Product_Shop')->where('id',$id)->first()->toArray();
+            $product = Product::with('ProductImage','Product_Shop','shops')->where('id',$id)->first()->toArray();
             if($product){
             return $this->responseHelper->success('Product details successfully!',$product);
             }
