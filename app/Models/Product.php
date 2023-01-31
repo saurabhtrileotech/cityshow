@@ -42,7 +42,7 @@ class Product extends Model
     }
 
     public function shops(){
-        return $this->belongsToMany(Shop::class,'shop_products','shop_id','product_id')->with('Product_Shop');
+        return $this->belongsToMany(Shop::class,'shop_products','product_id','shop_id')->with('Product_Shop');
     }
     public function getIsFavAttribute(){
         $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$this->id)->first();
