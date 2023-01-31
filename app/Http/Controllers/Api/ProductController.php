@@ -40,7 +40,7 @@ class ProductController extends Controller
              }
              $totalCount = $products->count();
          
-          if($totalCount > 1){
+          if($totalCount > 0){
  
              if(isset($request->pagination) ||  $request->pagination != 'false'){
                  $limit = isset($request->limit) ? $request->limit : 10;
