@@ -41,8 +41,8 @@ class Product extends Model
         return $this->hasMany('App\Models\ShopProduct','product_id');
     }
 
-    public function shops(){
-        return $this->belongsToMany(Shop::class,'shop_products','shop_id','product_id')->with('Product_Shop');
+    public function ProductShop(){
+        return $this->belongsToMany(Shop::class,'shop_products','shop_id','product_id');
     }
     public function getIsFavAttribute(){
         $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$this->id)->first();
