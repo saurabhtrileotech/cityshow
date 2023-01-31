@@ -90,13 +90,19 @@ class ShopController extends Controller
             $shop->user_id  = Auth::user()->id;
             $shop->shop_name = ($request->shop_name) ? $request->shop_name : '';
             if(isset($request->category)){
-                $shop->notes =  $request->category;
+                $shop->category_id =  $request->category;
             }
             if(isset($request->notes)){
                 $shop->notes =  $request->notes;
             }
             if(isset($request->address)){
                 $shop->address =  $request->address;
+            }
+            if(isset($request->latitude)){
+                $shop->latitude =  $request->latitude;
+            }
+            if(isset($request->longitude)){
+                $shop->longitude =  $request->longitude;
             }
             $banner_image = $request->file('banner_image');
             if ($banner_image) {

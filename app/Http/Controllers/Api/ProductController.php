@@ -30,9 +30,13 @@ class ProductController extends Controller
     public function productList(Request $request){
         try{
              $category_id = isset($request->category_id) ? $request->category_id : '';
+             $user_id = isset($request->user_id) ? $request->user_id : '';
              $products = Product::with('ProductImage');
              if(!empty($category_id )){
                 $products = $products->where('cat_id',$category_id);
+             }
+             if(!empty($user_id)){
+                $products = $products->where('shopkeeper_id',$user_id);
              }
              $totalCount = $products->count();
          
