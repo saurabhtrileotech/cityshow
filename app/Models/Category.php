@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\CategoryImages;
 use App\Models\Shop;
+use App\Models\Product;
 use DB;
 
 class Category extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $appends = ['category_images'];
+    protected $appends = ['category_images','product_count'];
 
     // public function categoryImage(){
     //     return $this->hasMany(CategoryImages::class,'category_id')->where('type','=', 0);
@@ -30,5 +31,9 @@ class Category extends Model
 
     public function shops(){
         return $this->hasMany(Shop::class,'category_id');
+    }
+
+    public function getProductCountAttribute(){
+        return Product::where('cat_id',$this->id)->count();
     }
 }
