@@ -75,7 +75,7 @@ class ProductController extends Controller
         try{
             $product = Product::with('ProductImage','ProductShop')->where('id',$id)->first()->toArray();
             if($product){
-            return $this->responseHelper->success('Product details successfully!',$product);
+                return $this->responseHelper->success('Product details successfully!',$product);
             }
             return $this->responseHelper->error(trans('Product Not Found!'));
         }catch (\Exception $e) {

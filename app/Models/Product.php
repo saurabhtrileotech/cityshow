@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Favourite;
+use App\Models\Shop;
 use Auth;
 
 class Product extends Model
@@ -42,7 +43,7 @@ class Product extends Model
     }
 
     public function ProductShop(){
-        return $this->belongsToMany(Shop::class,'shop_products','shop_id','product_id');
+        return $this->belongsToMany(Shop::class,'shop_products','product_id','shop_id');
     }
     public function getIsFavAttribute(){
         $isFavourite =  Favourite::where('user_id',Auth::user()->id)->where('product_id',$this->id)->first();
