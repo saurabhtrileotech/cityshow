@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\DiscountController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,6 +48,12 @@ Route::group(['middleware' => ['auth:api']], function () {
    Route::get('details/{id}', [ProductController::class, 'getDetails']);
    Route::post('/add-to-favourite', [ProductController::class, 'addToFavourite']);
    Route::get('get-favourite-list', [ProductController::class, 'getFavouriteList']);
+});
+Route::group(['prefix' => 'discount'],function(){
+   Route::post('/list', [DiscountController::class, 'discountList']);
+   Route::post('/create', [DiscountController::class, 'store']);
+   Route::delete('/{id}', [DiscountController::class, 'delete']);
+   Route::get('details/{id}', [DiscountController::class, 'getDetails']);
 });
 /**product route end */
 

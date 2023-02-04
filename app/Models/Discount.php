@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Discount extends Model
 {
     use HasFactory;
+
+    //protected $appends = ['image_url'];
+
+    public function getImageAttribute($value){
+        $path =  'discount_image/';
+        return ($value) ? asset($path.$value) : "";
+    }
 }
