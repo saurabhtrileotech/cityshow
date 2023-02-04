@@ -147,6 +147,18 @@ class DiscountController extends Controller
             return $this->responseHelper->error($e->getMessage());
         } 
     }
+
+    public function getDetails($id){
+        try{
+            $discount = Discount::with('DiscountProducts.ProductImage','DiscountShop.shopImages')->where('id',$id)->first()->toArray();
+            if($discount){
+                return $this->responseHelper->success('Discount details successfully!',$discount);
+            }
+            return $this->responseHelper->error('Discount Not Found!');
+        }catch (\Exception $e) {
+            return $this->responseHelper->error('Something went wrong');
+        }
+    }
     
     
 }
