@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Discount;
 use App\Models\Shop;
 use App\Models\ShopDiscount;
+use App\Models\Product;
+use App\Models\ShopProduct;
 use Exception,Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,6 +30,7 @@ class DiscountController extends Controller
 
     public function store(Request $request)
     {
+        
         $validated = Validator::make($request->all(), [
             'coupon_name' => 'required',
             'coupon_code' => 'required',
@@ -43,6 +46,7 @@ class DiscountController extends Controller
         try {
             if($request->id){
                 $discount = Discount::find($request->id);
+                //dd($discount);
             }else{
                 $discount = new Discount();
             }
@@ -52,9 +56,11 @@ class DiscountController extends Controller
             $discount->is_price = $request->is_price;
             $discount->discount =  $request->discount;
             $discount->notes =  ($request->notes) ? $request->notes : null;
-
+           // dd($request->end_date);
             $discount->start_date = \Carbon\Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
             $discount->end_date = \Carbon\Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
+
+            //dd(\Carbon\Carbon::parse($request->start_date)->format('Y-m-d H:i:s'),\Carbon\Carbon::parse($request->end_date)->format('Y-m-d H:i:s'));
 
             $image = $request->file('image');
             if ($image) {
@@ -78,10 +84,11 @@ class DiscountController extends Controller
              }
                 if($request->shop_id){
                     $shops = explode(",",$request->shop_id);
-                    if (count($shops) > 0) {
-                        foreach ($shops as $shop_id) {
+                    $products = ShopProduct::select('product_id')->whereIn('shop_id',$shops)->distinct('product_id')->pluck('product_id')->toArray();
+                    if (count($products) > 0) {
+                        foreach ($products as $product_id) {
                             $shop_discount = new ShopDiscount();
-                            $shop_discount->shop_id = $shop_id;
+                            $shop_discount->product_id = $product_id;
                             $shop_discount->discount_id = $discount->id;
                             $shop_discount->save();
                         }
@@ -104,7 +111,7 @@ class DiscountController extends Controller
             }
             
         } catch (Exception $e) {
-            return $this->responseHelper->error('Something went wrong');
+            return $this->responseHelper->error($e->getMessage());
         }
     }
 
@@ -112,7 +119,8 @@ class DiscountController extends Controller
         try{
 
             $user_id = isset($request->user_id) ? $request->user_id : '';
-            $discounts = Discount::select('*');
+            $current_date = date('Y-m-d');
+            $discounts = Discount::select('*')->whereDate('end_date','>=', $current_date);
             if(!empty($user_id)){
                $discounts = $discounts->where('shop_keeper_id',$user_id);
             }
@@ -150,7 +158,7 @@ class DiscountController extends Controller
 
     public function getDetails($id){
         try{
-            $discount = Discount::with('DiscountProducts.ProductImage','DiscountShop.shopImages')->where('id',$id)->first()->toArray();
+            $discount = Discount::with('DiscountProducts.ProductImage')->where('id',$id)->first()->toArray();
             if($discount){
                 return $this->responseHelper->success('Discount details successfully!',$discount);
             }
