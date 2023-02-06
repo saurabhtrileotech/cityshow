@@ -53,8 +53,8 @@ class DiscountController extends Controller
             $discount->discount =  $request->discount;
             $discount->notes =  ($request->notes) ? $request->notes : null;
 
-            //$discount->start_date = \Carbon\Carbon::parse($request->startdate)->format('Y-m-d H:i:s');
-            //$discount->end_date = \Carbon\Carbon::parse($request->enddate)->format('Y-m-d H:i:s');
+            $discount->start_date = \Carbon\Carbon::parse($request->start_date)->format('Y-m-d H:i:s');
+            $discount->end_date = \Carbon\Carbon::parse($request->end_date)->format('Y-m-d H:i:s');
 
             $image = $request->file('image');
             if ($image) {
