@@ -53,7 +53,7 @@ class ProductController extends Controller
  
                  return $this->responseHelper->success('Products gets successfully', $response);
              }else{
-                 $shops = $products->get()->toArray();
+                 $products = $products->get()->toArray();
                  $response['products'] = $products;
  
                  return $this->responseHelper->success('Products gets successfully', $response);

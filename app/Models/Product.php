@@ -13,7 +13,7 @@ class Product extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $appends = ['is_fav'];
+    protected $appends = ['is_fav','discount'];
 
     public function Shopkeeper()
     {
@@ -52,6 +52,15 @@ class Product extends Model
         }else{
             return 0;
         }
+    }
+
+    public function getDiscountAttribute() {
+        $discount = (object)[];
+        $discount_id = ShopDiscount::select('discount_id')->where('product_id',$this->id)->latest()->first();        
+        if($discount_id){
+            $discount = Discount::where('id',$discount_id->discount_id)->whereDate('end_date','>=', date('Y-m-d'))->first()->toArray();
+        }
+        return $discount;
     }
     
 }

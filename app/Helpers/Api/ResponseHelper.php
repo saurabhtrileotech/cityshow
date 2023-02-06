@@ -34,7 +34,9 @@ class ResponseHelper
     {
         if (!empty($data)) {
             array_walk_recursive($data, function (&$item) {
-                $item = strval($item);
+                if(!is_object($item)){
+                    $item = strval($item);    
+                }
             });
         }
         return Response::json([
