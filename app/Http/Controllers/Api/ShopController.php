@@ -104,6 +104,9 @@ class ShopController extends Controller
             if(isset($request->longitude)){
                 $shop->longitude =  $request->longitude;
             }
+            if(isset($request->longitude)){
+                $shop->city =  $request->city;
+            }
             $banner_image = $request->file('banner_image');
             if ($banner_image) {
                 $ext = $banner_image->getClientOriginalExtension();
