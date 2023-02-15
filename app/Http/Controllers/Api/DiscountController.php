@@ -167,6 +167,21 @@ class DiscountController extends Controller
             return $this->responseHelper->error('Something went wrong');
         }
     }
+
+    public function delete($id){
+        try {
+            $discount = Discount::find($id);
+            if(!empty($discount)){
+                $discount->delete();
+                ShopDiscount::where('discount_id',$id)->delete();
+                return $this->responseHelper->success(trans('Discount Deleted successfully!'));
+
+            }
+            return $this->responseHelper->error(trans('Discount Not Found!'));
+        } catch (\Exception $e) {
+            return $this->responseHelper->error('Something went wrong');
+        }
+    }
     
     
 }
