@@ -56,9 +56,13 @@ class Product extends Model
 
     public function getDiscountAttribute() {
         $discount = (object)[];
-        $discount_id = ShopDiscount::select('discount_id')->where('product_id',$this->id)->latest()->first();        
+        $discount_id = ShopDiscount::select('discount_id')->where('product_id',$this->id)->latest()->first();
+       // dd($discount_id);        
         if($discount_id){
-            $discount = Discount::where('id',$discount_id->discount_id)->whereDate('end_date','>=', date('Y-m-d'))->first()->toArray();
+            $discount_obj = Discount::where('id',$discount_id->discount_id)->whereDate('end_date','>=', date('Y-m-d'))->first();
+            if($discount_obj){
+                $discount = $discount_obj->toArray();
+            }
         }
         return $discount;
     }

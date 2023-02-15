@@ -40,9 +40,9 @@ class ProductController extends Controller
              }
              $totalCount = $products->count();
          
-          if($totalCount > 0){
+          if($totalCount > 0){  
  
-             if(isset($request->pagination) ||  $request->pagination != 'false'){
+             if(isset($request->pagination) &&  $request->pagination != 'false'){
                  $limit = isset($request->limit) ? $request->limit : 10;
                  $page = ($request->page > 0) ? $request->page : 1; 
                  $products = $products->limit($limit)->offset(($page - 1) * $limit)->get()->toArray();
