@@ -54,6 +54,7 @@ Route::group(['prefix' => 'discount'],function(){
    Route::post('/create', [DiscountController::class, 'store']);
    Route::delete('/{id}', [DiscountController::class, 'delete']);
    Route::get('details/{id}', [DiscountController::class, 'getDetails']);
+   Route::delete('/{id}', [DiscountController::class, 'delete']);
 });
 /**product route end */
 

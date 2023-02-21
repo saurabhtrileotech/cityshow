@@ -214,20 +214,23 @@ class ProductController extends Controller
             $product->connectivity = ($request->connectivity) ? $request->connectivity : $product->connectivity;
             $product->key_featurees = ($request->key_feature) ? implode(",",$request->key_feature) : $product->key_featurees;    
             $product->description = ($request->description) ? $request->description : $product->description;
-
+            $deletedImagesId = ($request->deletedImagesId) ? explode(",",$request->deletedImagesId) : [];
            if($product->save()){
+            // delete existing images
+            if(count($deletedImagesId) > 0){
+                $oldProductImages = ProductImage::whereIn('id',$deletedImagesId)->get();
+                if(!empty($oldProductImages)){
+                    foreach($oldProductImages as  $oldImage){
+                        \File::delete('/public/images/product' . $product->id . "/".$oldImage->image);
+    
+                    }
+                }
+                ProductImage::whereIn('id',$deletedImagesId)->delete();
+            }
             // save Multiple images
                 $product_images = [];
                 $images = $request->file('images');
                 if ($images) {
-                    $oldProductImages = ProductImage::where('product_id',$product->id)->get();
-                    if(!empty($oldProductImages)){
-                        foreach($oldProductImages as  $oldImage){
-                            \File::delete('/public/images/product' . $product->id . "/".$oldImage->image);
-
-                        }
-                    }
-                    ProductImage::where('product_id',$product->id)->delete();
                     foreach($images as $image){
                         $product_image = new ProductImage();
                         $product_image->product_id = $product->id;
@@ -235,7 +238,7 @@ class ProductController extends Controller
                         $newFileName = time() . '_' . rand(0, 1000) . '.' . $ext;
                         $destinationPath = '/images/product/' . $product->id;
                         /**create folder  **/
-                        $destinationPath = base_path() . '/public/images/product/' . $product->id . "/";
+                        $destinationPath = base_path() . '/public/images/product/' . $product->id . "/";    
                         if (!file_exists($destinationPath)) {
                             \File::makeDirectory($destinationPath, 0777, true);
                             chmod($destinationPath, 0777);
@@ -266,8 +269,9 @@ class ProductController extends Controller
                     }
                 }
                 $product->product_shops = $product_shops;
+                $product_date = Product::with('ProductImage','ProductShop')->where('id',$request->id)->first()->toArray();
             }
-            return $this->responseHelper->success('Product updated successfully!',$product);
+            return $this->responseHelper->success('Product updated successfully!',$product_date);
         } catch (\Exception $e) {
             return $this->responseHelper->error('Something went wrong');
         }
