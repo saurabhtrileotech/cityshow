@@ -31,13 +31,32 @@ class ProductController extends Controller
         try{
              $category_id = isset($request->category_id) ? $request->category_id : '';
              $user_id = isset($request->user_id) ? $request->user_id : '';
+             $filter = isset($request->filter) ? $request->filter : '';
              $products = Product::with('ProductImage');
              if(!empty($category_id )){
                 $products = $products->where('cat_id',$category_id);
              }
              if(!empty($user_id)){
                 $products = $products->where('shopkeeper_id',$user_id);
+             }else{
+                if(!empty($filter)){
+                   if($filter == 1){
+                    $products = $products->orderBy('selling_price','ASC'); 
+                   }
+                   else if($filter == 2){
+                    $products = $products->orderBy('selling_price','DESC');
+                   }
+                   else if($filter == 3){
+                    $products = $products->orderBy('id','DESC');
+                   }
+                   else if($filter == 4){
+                    $products = $products->orderBy('counter','DESC');
+                   }
+                }
              }
+
+
+
              $totalCount = $products->count();
          
           if($totalCount > 0){  
@@ -75,6 +94,9 @@ class ProductController extends Controller
         try{
             $product = Product::with('ProductImage','ProductShop')->where('id',$id)->first()->toArray();
             if($product){
+                $product_data = Product::find($id);
+                $product_data->counter = $product['counter'] + 1;
+                $product_data->save();
                 return $this->responseHelper->success('Product details successfully!',$product);
             }
             return $this->responseHelper->error(trans('Product Not Found!'));
