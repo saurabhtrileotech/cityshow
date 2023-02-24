@@ -19,6 +19,7 @@ class DiscountController extends Controller
 {
     
     private $responseHelper;
+    private $commonHelper;
 
     public function __construct(
         ResponseHelper $responseHelper,
@@ -105,6 +106,21 @@ class DiscountController extends Controller
                         }
                     }
                 }
+                //push notification start
+                $pushNotificationData = [];
+                $pushNotificationData['send_by']  = $discount->shopkeeper_id;
+                $pushNotificationData['other_id']  = $discount->id;
+                $pushNotificationData['title']  = "New Discount added";
+                $pushNotificationData['type']  = "add_discount";
+                $pushNotificationData['message']  = "New Discount is added by".Auth::user()->username;
+                $pushNotificationData['notification_payload']  = $discount;
+                $pushNotificationData['icon_type']  = "success";
+
+                
+                $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
+                dispatch($sendPushNotificationRequest);
+                //push notification end
+
                 return $this->responseHelper->success('Discount saved successfully!',$discount);
             }else{
                 return $this->responseHelper->error('Something went wrong');

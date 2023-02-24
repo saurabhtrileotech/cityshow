@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     private $responseHelper;
+    private $commonHelper;
+
 
     public function __construct(
         ResponseHelper $responseHelper,
@@ -185,12 +187,24 @@ class ProductController extends Controller
                     }
 
                 }
+                $shop =  Shop::where('user_id',$product->shopkeeper_id)->first();
+                $pushNotificationData = [];
+                $pushNotificationData['send_by']  = $product->shopkeeper_id;
+                $pushNotificationData['other_id']  = $product->id;
+                $pushNotificationData['type']  = "add_product";
+                $pushNotificationData['title']  = "New Product added";
+                $pushNotificationData['message']  = "New Arriavs added by ".$shop->shop_name;
+                $pushNotificationData['notification_payload']  = $product;
+
+                $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
+                dispatch($sendPushNotificationRequest);
+
                 //$product->product_shops = $product_shops;
                 $product_data = Product::with('ProductImage','Product_Shop')->where('id',$product->id)->first()->toArray();
                 return $this->responseHelper->success('Product added successfully!',$product_data);
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->responseHelper->error('Something went wrong');
         }
     }
