@@ -571,7 +571,7 @@ class CommonHelper
     {
         try {
             $url = "https://fcm.googleapis.com/fcm/send"; /* put url link */
-            $server_key = "8IGO8kc:APA91bFRczFwjopW1ZmG-ZmjUaL"; /* Server Key */
+            $server_key = "AAAARQvlNa8:APA91bG8ENiVSlxL1mx8b3d2I9CZ0vg8vH-n1CKu1SNLlHLzy9RPDFHTjm0SOe1lh5TOA6FNwRZmIUIURWPgm6HTLiInfetDQIEk-7hU_s7AjVCmJt4oD-T_j2M__JxmoF8Mhj65ODvi"; /* Server Key */
             $fields = array();
             $fields['content_available'] = false;
             $fields['silent'] = true;
