@@ -10,6 +10,7 @@ use App\Helpers\Api\CommonHelper;
 use App\Models\Favourite;
 use App\Models\Shop;
 use App\Models\ShopProduct;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -196,8 +197,22 @@ class ProductController extends Controller
                 $pushNotificationData['message']  = "New Arriavs added by";
                 $pushNotificationData['notification_payload']  = $product;
 
-                $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
-                dispatch($sendPushNotificationRequest);
+                // $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
+                // dispatch($sendPushNotificationRequest);
+
+                $device_tokens = User::select('device_token')->pluck('device_token')->toArrat();
+                if(!empty($device_tokens)){
+                    //foreach($users as $user){
+                        $title = $pushNotificationData['title'];
+                        $message = $pushNotificationData['message'];
+                        $type = $pushNotificationData['type'];
+                        $notification_payload = $pushNotificationData['notification_payload'];
+                        $icon_type = $pushNotificationData['icon_type'];
+                        $send_by = $pushNotificationData['send_by'];
+                        //$user = User::where('id', $user->id)->first();
+                        $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, 'android', $notification_payload, '');
+                    //}
+                }
 
                 //$product->product_shops = $product_shops;
                 $product_data = Product::with('ProductImage','Product_Shop')->where('id',$product->id)->first()->toArray();

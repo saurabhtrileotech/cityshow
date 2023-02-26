@@ -506,7 +506,7 @@ class CommonHelper
         // echo "<br>\nnotification_payload~~>" . json_encode($notification_payload);
         // // return true;
         try {
-            if ($user && ('active' == $user->is_notification) && !empty($user->device_token) && !empty($user->device_type)) {
+            if (!empty($user->device_token) && !empty($user->device_type)) {
                 $url = 'https://fcm.googleapis.com/fcm/send'; // put url link
                 $server_key = 'AAAARQvlNa8:APA91bG8ENiVSlxL1mx8b3d2I9CZ0vg8vH-n1CKu1SNLlHLzy9RPDFHTjm0SOe1lh5TOA6FNwRZmIUIURWPgm6HTLiInfetDQIEk-7hU_s7AjVCmJt4oD-T_j2M__JxmoF8Mhj65ODvi'; // Server Key
                 $fields = [];
@@ -563,6 +563,63 @@ class CommonHelper
         } catch (\Exception $e) {
             Log::info('The ERROR is...'.$e);
 
+            return $this->responseHelper->error($e->getMessage());
+        }
+    }
+
+    public function sendNotificationNew($title, $message, $type, $deviceIdsonly, $deviceType, $notification_payload, $image_url = "")
+    {
+        try {
+            $url = "https://fcm.googleapis.com/fcm/send"; /* put url link */
+            $server_key = "8IGO8kc:APA91bFRczFwjopW1ZmG-ZmjUaL"; /* Server Key */
+            $fields = array();
+            $fields['content_available'] = false;
+            $fields['silent'] = true;
+            if ($deviceType == "android") {
+                //Meaning Andorid
+                $fields['data'] = array();
+                $fields['data']['title'] = $title;
+                if ($image_url != "") {
+                    $fields['data']['image_url'] = $image_url;
+                }
+                $fields['data']['body'] = $message;
+                $fields['data']['notification_data'] = $notification_payload;
+                $fields['data']['click_action'] = '.MainActivity';
+                $fields['data']['sound'] = 'default';
+                $fields['data']['type'] = $type;
+            } else if ($deviceType == "iOS") {
+                //Meaning iOS
+                $fields['notification'] = array();
+                $fields['notification']['title'] = $message;
+                $fields['notification']['body'] = $title;
+                $fields['notification']['extra_support_message'] = $notification_payload;
+                $fields['notification']['click_action'] = '.MainActivity';
+                $fields['notification']['sound'] = 'default';
+                $fields['notification']['type'] = $type;
+            }
+            $fields['registration_ids'] = $deviceIdsonly;
+            $fields['priority'] = "high";
+            $headers = array(
+                'Content-Type:application/json',
+                'Authorization:key=' . $server_key,
+            );
+            $fields = json_encode($fields);
+            // print_r($fields);die;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            $result = curl_exec($ch);
+            if ($result === false) {
+                die('Notification Send Error: ' . curl_error($ch));
+            }
+            curl_close($ch);
+            return $result;
+        } catch (Exception $e) {
             return $this->responseHelper->error($e->getMessage());
         }
     }
