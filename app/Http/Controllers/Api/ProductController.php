@@ -200,14 +200,14 @@ class ProductController extends Controller
                 // $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
                 // dispatch($sendPushNotificationRequest);
 
-                $device_tokens = User::select('device_token')->pluck('device_token')->toArrat();
+                $device_tokens = User::select('device_token')->pluck('device_token')->toArray();
                 if(!empty($device_tokens)){
                     //foreach($users as $user){
                         $title = $pushNotificationData['title'];
                         $message = $pushNotificationData['message'];
                         $type = $pushNotificationData['type'];
                         $notification_payload = $pushNotificationData['notification_payload'];
-                        $icon_type = $pushNotificationData['icon_type'];
+                        //$icon_type = $pushNotificationData['icon_type'];
                         $send_by = $pushNotificationData['send_by'];
                         //$user = User::where('id', $user->id)->first();
                         $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, 'android', $notification_payload, '');
@@ -220,6 +220,7 @@ class ProductController extends Controller
             }
             
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return $this->responseHelper->error('Something went wrong');
         }
     }
