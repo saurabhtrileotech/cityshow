@@ -193,7 +193,7 @@ class ProductController extends Controller
                 $pushNotificationData['other_id']  = $product->id;
                 $pushNotificationData['type']  = "add_product";
                 $pushNotificationData['title']  = "New Product added";
-                $pushNotificationData['message']  = "New Arriavs added by ".$shop->shop_name;
+                $pushNotificationData['message']  = "New Arriavs added by";
                 $pushNotificationData['notification_payload']  = $product;
 
                 $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
