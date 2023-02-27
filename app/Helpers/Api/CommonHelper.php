@@ -577,16 +577,16 @@ class CommonHelper
             $fields['silent'] = true;
             if ($deviceType == "android") {
                 //Meaning Andorid
-                $fields['data'] = array();
-                $fields['data']['title'] = $title;
+                $fields['notification'] = array();
+                $fields['notification']['title'] = $title;
                 if ($image_url != "") {
                     $fields['data']['image_url'] = $image_url;
                 }
-                $fields['data']['body'] = $message;
-                $fields['data']['notification_data'] = $notification_payload;
-                $fields['data']['click_action'] = '.MainActivity';
-                $fields['data']['sound'] = 'default';
-                $fields['data']['type'] = $type;
+                $fields['notification']['body'] = $message;
+                $fields['notification']['notification_data'] = $notification_payload;
+                $fields['notification']['click_action'] = '.MainActivity';
+                $fields['notification']['sound'] = 'default';
+                $fields['notification']['type'] = $type;
             } else if ($deviceType == "iOS") {
                 //Meaning iOS
                 $fields['notification'] = array();
@@ -599,12 +599,12 @@ class CommonHelper
             }
             $fields['registration_ids'] = $deviceIdsonly;
             $fields['priority'] = "high";
+            //dd($fields);
             $headers = array(
                 'Content-Type:application/json',
                 'Authorization:key=' . $server_key,
             );
             $fields = json_encode($fields);
-            // print_r($fields);die;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);

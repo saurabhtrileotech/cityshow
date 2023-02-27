@@ -200,17 +200,18 @@ class ProductController extends Controller
                 // $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
                 // dispatch($sendPushNotificationRequest);
 
-                $device_tokens = User::select('device_token')->pluck('device_token')->toArray();
+                $device_tokens = User::select('device_token')->whereNotNull('device_token')->pluck('device_token')->toArray();
                 if(!empty($device_tokens)){
                     //foreach($users as $user){
-                        $title = $pushNotificationData['title'];
-                        $message = $pushNotificationData['message'];
-                        $type = $pushNotificationData['type'];
-                        $notification_payload = $pushNotificationData['notification_payload'];
+                        $title = "New Product added";
+                        $message = "New Arriavs added by";
+                        $type = 'add_product';
+                        $notification_payload = $product;
+                        $device_type = 'android';
                         //$icon_type = $pushNotificationData['icon_type'];
-                        $send_by = $pushNotificationData['send_by'];
+                        //$send_by = $pushNotificationData['send_by'];
                         //$user = User::where('id', $user->id)->first();
-                        $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, 'android', $notification_payload, '');
+                        $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, $device_type, $notification_payload, '');
                     //}
                 }
 
