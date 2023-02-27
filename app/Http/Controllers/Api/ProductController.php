@@ -204,7 +204,7 @@ class ProductController extends Controller
                 if(!empty($device_tokens)){
                     //foreach($users as $user){
                         $title = "New Product added";
-                        $message = "New Arriavs added by";
+                        $message = "Hey, We have new arrivals in ".$product_shops[0].", Kindly check cityshow app";
                         $type = 'add_product';
                         $notification_payload = $product;
                         $device_type = 'android';
