@@ -11,6 +11,7 @@ use App\Models\Discount;
 use App\Models\Shop;
 use App\Models\ShopDiscount;
 use App\Models\Product;
+use App\Models\Notification;
 use App\Models\ShopProduct;
 use Exception,Auth;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,7 @@ class DiscountController extends Controller
             }else{
                 $discount = new Discount();
             }
+            
             $discount->shop_keeper_id = Auth::user()->id;
             $discount->coupon_name = $request->coupon_name;
             $discount->coupon_code = $request->coupon_code;
@@ -107,18 +109,43 @@ class DiscountController extends Controller
                     }
                 }
                 //push notification start
-                $pushNotificationData = [];
-                $pushNotificationData['send_by']  = $discount->shopkeeper_id;
-                $pushNotificationData['other_id']  = $discount->id;
-                $pushNotificationData['title']  = "New Discount added";
-                $pushNotificationData['type']  = "add_discount";
-                $pushNotificationData['message']  = "New Discount is added by".Auth::user()->username;
-                $pushNotificationData['notification_payload']  = $discount;
-                $pushNotificationData['icon_type']  = "success";
+                // $pushNotificationData = [];
+                // $pushNotificationData['send_by']  = $discount->shopkeeper_id;
+                // $pushNotificationData['other_id']  = $discount->id;
+                // $pushNotificationData['title']  = "New Discount added";
+                // $pushNotificationData['type']  = "add_discount";
+                // $pushNotificationData['message']  = "New Discount is added by".Auth::user()->username;
+                // $pushNotificationData['notification_payload']  = $discount;
+                // $pushNotificationData['icon_type']  = "success";
 
                 
-                $sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
-                dispatch($sendPushNotificationRequest);
+                //$sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
+                //dispatch($sendPushNotificationRequest);
+                if(!$request->id){
+                $device_tokens = User::select('device_token')->whereNotNull('device_token')->pluck('device_token')->toArray();
+                if(!empty($device_tokens)){
+                    //foreach($users as $user){
+                        $title = "New Discount added";
+                        $message = "New Discount is added by".Auth::user()->username;
+                        $type = 'add_discount';
+                        $notification_payload = $discount;
+                        $device_type = 'android';
+                        //$icon_type = $pushNotificationData['icon_type'];
+                        //$send_by = $pushNotificationData['send_by'];
+                        //$user = User::where('id', $user->id)->first();
+                        $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, $device_type, $notification_payload, '');
+
+                        $notification = new Notification(); 
+                        $notification->discount_id = $discount->id;
+                        $notification->type = $type;
+                        $notification->title = $title;
+                        $notification->message = $message;
+                        $notification->icon_type = 'success';
+                        $notification->send_by = Auth::user()->id;
+                        $notification->save();
+                    }
+                    //}
+                }
                 //push notification end
 
                 return $this->responseHelper->success('Discount saved successfully!',$discount);
@@ -127,6 +154,7 @@ class DiscountController extends Controller
             }
             
         } catch (Exception $e) {
+            dd($e);
             return $this->responseHelper->error($e->getMessage());
         }
     }

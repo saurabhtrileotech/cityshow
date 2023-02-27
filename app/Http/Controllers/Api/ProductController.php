@@ -11,6 +11,7 @@ use App\Models\Favourite;
 use App\Models\Shop;
 use App\Models\ShopProduct;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -212,8 +213,20 @@ class ProductController extends Controller
                         //$send_by = $pushNotificationData['send_by'];
                         //$user = User::where('id', $user->id)->first();
                         $this->commonHelper->sendNotificationNew($title, $message, $type,$device_tokens, $device_type, $notification_payload, '');
+
+                        $notification = new Notification(); 
+                        $notification->product_id = $product->id;
+                        $notification->type = $type;
+                        $notification->title = $title;
+                        $notification->message = $message;
+                        $notification->icon_type = 'success';
+                        $notification->send_by = Auth::user()->id;
+                        $notification->save();
                     //}
                 }
+
+                // Save data in notification data
+
 
                 //$product->product_shops = $product_shops;
                 $product_data = Product::with('ProductImage','Product_Shop')->where('id',$product->id)->first()->toArray();

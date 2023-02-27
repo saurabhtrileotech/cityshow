@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\DiscountController;
+use App\Http\Controllers\Api\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,6 +58,10 @@ Route::group(['prefix' => 'discount'],function(){
    Route::delete('/{id}', [DiscountController::class, 'delete']);
 });
 /**product route end */
+
+Route::group(['prefix' => 'notificaton'],function(){
+   Route::post('/list', [NotificationController::class, 'notificationList']);
+});
 
 });
 
