@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\StripeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -61,6 +62,9 @@ Route::group(['prefix' => 'discount'],function(){
 
 Route::group(['prefix' => 'notificaton'],function(){
    Route::post('/list', [NotificationController::class, 'notificationList']);
+});
+Route::group(['prefix' => 'subsctiption'],function(){
+   Route::get('/list', [StripeController::class, 'getSubscription']);
 });
 
 });

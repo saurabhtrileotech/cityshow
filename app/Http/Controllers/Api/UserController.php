@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\Api\ResponseHelper;
 use App\Helpers\Api\CommonHelper;
+use App\Helpers\Api\StripeHelper;
 use App\Models\User;
 use Validator;
 use Auth;
@@ -65,6 +66,9 @@ class UserController extends Controller
             if($user->save()){
                 $user->assignRole('shop_keeper');
 
+                // Create customer in Stripe
+                $stripeHelper = new StripeHelper();
+                $stripeHelper->CreateCustomer($request->email);
                 // get user profile
                 $user = User::find($user->id);
                 return $this->responseHelper->success('User created successfully',$user);
@@ -110,9 +114,16 @@ class UserController extends Controller
                 $user->save();
                 $user->role = $user->roles()->get()->toArray();
                 //$user->profile_pic = $user->profile_pic?url('/public/profile_pic/'.$user->profile_pic):"";
-                $data = $user->toArray();
+                
                 //$data['other_details'] = $this->extraDetails($role);
-                //$data = $this->removeNullValue($data);  
+                //$data = $this->removeNullValue($data); 
+                                // Create customer in Stripe
+                $stripeHelper = new StripeHelper();
+                $stripeHelper->CreateCustomer($request->email);
+
+                $user = User::find(Auth::user()->id);
+                $user->role = $user->roles()->get()->toArray();
+                $data = $user->toArray();
                 $response['user'] = $data;
                 $response['token'] = $token;
                 return $this->responseHelper->success('User created successfully',$response);

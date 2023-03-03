@@ -126,7 +126,7 @@ class DiscountController extends Controller
                 if(!empty($device_tokens)){
                     //foreach($users as $user){
                         $title = "New Discount added";
-                        $message = "New Discount is added by".Auth::user()->username;
+                        $message = "New Discount is added by ".Auth::user()->username;
                         $type = 'add_discount';
                         $notification_payload = $discount;
                         $device_type = 'android';
