@@ -27,6 +27,14 @@ class StripeController extends Controller
             $stripe = new \Stripe\StripeClient($stripe_key);
             $products = $stripe->products->all();
             $data['plans'] = $products->data;
+            foreach($products->data as $price)
+            {
+               $price_data =  $stripe->prices->retrieve(
+                    $price->default_price,
+                  ); 
+               $price->price_data   = ($price_data) ?  $price_data : [];
+            }
+            //dd($data);
             return $this->responseHelper->success('Subscription list get successful',$data);
         } catch (\Stripe\Exception\CardException $e) {
             return $this->responseHelper->error('Something went wrong');
