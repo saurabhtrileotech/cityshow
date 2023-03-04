@@ -63,7 +63,7 @@ Route::group(['prefix' => 'discount'],function(){
 Route::group(['prefix' => 'notificaton'],function(){
    Route::post('/list', [NotificationController::class, 'notificationList']);
 });
-Route::group(['prefix' => 'subsctiption'],function(){
+Route::group(['prefix' => 'plan'],function(){
    Route::get('/list', [StripeController::class, 'getSubscription']);
 });
 
