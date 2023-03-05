@@ -26,6 +26,7 @@ Auth::routes();
 Route::get('/privacy-policy', [App\Http\Controllers\CMSPageController::class, 'getPrivacyPolicy']);
 Route::get('/terms-condition', [App\Http\Controllers\CMSPageController::class, 'getTermsCondition']);
 Route::get('/faq', [App\Http\Controllers\CMSPageController::class, 'getFAQ']);
+Route::get('/about-us', [App\Http\Controllers\CMSPageController::class, 'getAboutUs']);
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

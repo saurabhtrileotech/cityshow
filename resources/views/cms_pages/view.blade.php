@@ -38,6 +38,9 @@
                             @if($data->type == 'faq')
                             Frequently Asked Questions
                             @endif
+                            @if($data->type == 'about')
+                            About Us
+                            @endif
                         </h3>
                     </div>
                     <div class="card-body">

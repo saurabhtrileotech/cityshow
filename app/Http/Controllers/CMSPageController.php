@@ -31,7 +31,7 @@ class CMSPageController extends Controller
     public function create()
     {
 
-        $static_keys = ['privacy_policy', 'terms_conditions', 'faq'];
+        $static_keys = ['privacy_policy', 'terms_conditions', 'faq','about'];
 
         // foreach ($static_keys as $key => $static_key) {
         //     // Check the record exists
@@ -76,7 +76,7 @@ class CMSPageController extends Controller
             if (!$data) {
                 return redirect()->route('cmsPages.index')->with('error', 'Page not found');
             }
-            $static_keys = ['privacy_policy', 'terms_conditions', 'faq'];
+            $static_keys = ['privacy_policy', 'terms_conditions', 'faq','about'];
             return view('cms_pages.edit', compact('static_keys', 'data'));
         } catch (\Exception $e) {
             return redirect()->route('cmsPages.index')->with('error', $e->getMessage());
@@ -149,6 +149,19 @@ class CMSPageController extends Controller
     {
         try {
             $data = StaticPage::where('type', 'faq')->first();
+            if (!$data) {
+                return  abort(500);
+            }
+            return view('cms_pages.view', compact('data'));
+        } catch (Exception $e) {
+            return  abort(500);
+        }
+    }
+
+    public function getAboutUs()
+    {
+        try {
+            $data = StaticPage::where('type', 'about')->first();
             if (!$data) {
                 return  abort(500);
             }
