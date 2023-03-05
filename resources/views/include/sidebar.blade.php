@@ -65,6 +65,16 @@
                 <p>Discounts</p>
               </a>
           </li>
+          <li class="nav-item">
+        <a href="{{route('cmsPages.index')}}"
+          class="nav-link {{ Request()->is('CMS-Pages','CMS-Pages/*') ? 'active' : '' }}">
+          <i class="nav-icon far fa-file-alt"></i>
+          <p>
+            CMS Pages
+          </p>
+        </a>
+      </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -23,6 +23,10 @@ Auth::routes();
 
 
 
+Route::get('/privacy-policy', [App\Http\Controllers\CMSPageController::class, 'getPrivacyPolicy']);
+Route::get('/terms-condition', [App\Http\Controllers\CMSPageController::class, 'getTermsCondition']);
+Route::get('/faq', [App\Http\Controllers\CMSPageController::class, 'getFAQ']);
+
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function(){
@@ -106,7 +110,15 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
         Route::get('/discount/delete/{id}', [App\Http\Controllers\DiscountController::class, 'delete'])->name('discount.delete');
         Route::get('/discount/view/{id}', [App\Http\Controllers\DiscountController::class, 'view'])->name('discount.view');
 
-        
+        Route::group(['prefix' => 'CMS-Pages'], function () {
+            Route::get('/', [App\Http\Controllers\CMSPageController::class, 'index'])->name('cmsPages.index');
+            Route::get('/create', [App\Http\Controllers\CMSPageController::class, 'create'])->name('cmsPages.create');
+            Route::post('/store', [App\Http\Controllers\CMSPageController::class, 'store'])->name('cmsPages.store');
+            Route::get('/get-list', [App\Http\Controllers\CMSPageController::class, 'getCMSPageList']);
+            Route::get('/edit/{id}', [App\Http\Controllers\CMSPageController::class, 'edit'])->name('cmsPages.edit');
+            Route::post('/update/{id}', [App\Http\Controllers\CMSPageController::class, 'update'])->name('cmsPages.update');
+        });
+    
     });
         
 
