@@ -25,13 +25,33 @@ class StripeController extends Controller
         $this->commonHelper = $commonHelper;
     }
 
+    public function createEphemeralKey(){
+        try {
+            $stripe_key = config('constant.STRIPE_PUBLIC_KEY');
+            \Stripe\Stripe::setApiKey($stripe_key);
+            $stripe = new \Stripe\StripeClient($stripe_key);
+            
+            $response = Stripe\EphemeralKey::create(['customer' => Auth::user()->stripe_customer_id ], ['stripe_version' => '2020-08-27']);
+            //dd($data);
+            return $this->responseHelper->success('Ephemeral Key created successful',$response);
+        } catch (\Stripe\Exception\CardException $e) {
+            dd($e);
+            return $this->responseHelper->error('Something went wrong');
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            dd($e);
+            return $this->responseHelper->error('Something went wrong');
+        } catch (Exception $e) {
+            dd($e);
+            return $this->responseHelper->error('Something went wrong');
+        }
+    }
+
     public function getSubscription(){
         try {
             $stripe_key = config('constant.STRIPE_PUBLIC_KEY');
             \Stripe\Stripe::setApiKey($stripe_key);
             $stripe = new \Stripe\StripeClient($stripe_key);
             
-
             // Set your secret key. Remember to switch to your live secret key in production.
             // See your keys here: https://dashboard.stripe.com/apikeys
 
@@ -44,19 +64,6 @@ class StripeController extends Controller
                   ); 
                $price->price_data   = ($price_data) ?  $price_data : [];
             }
-            // Create dummy card for customer
-            $createCardToken = Stripe\Token::create([
-                'card' => [
-                    'number' => '4242424242424242',
-                    'exp_month' => '02',
-                    'exp_year' => '2024',
-                    'cvc' => '123',
-                ],
-            ]);
-            Stripe\Customer::createSource(
-                Auth::User()->stripe_customer_id,
-                ['source' => $createCardToken]
-            );
             //dd($data);
             return $this->responseHelper->success('Subscription list get successful',$data);
         } catch (\Stripe\Exception\CardException $e) {
