@@ -67,6 +67,9 @@ Route::group(['prefix' => 'plan'],function(){
    Route::get('/list', [StripeController::class, 'getSubscription']);
 });
 
+   Route::post('/subscribe-user', [StripeController::class, 'subscribeUser']);
+
+
 });
 
 
