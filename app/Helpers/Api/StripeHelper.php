@@ -46,7 +46,6 @@ class StripeHelper
                 // User::whereId($checkIfUserExists->id)->update(['stripe_customer_id' => $response->id]);
             }
         } catch (\Stripe\Exception\CardException $e) {
-            dd($e->getMessage());
             $errors['code'] = $e->getHttpStatus();
             $errors['message'] = $e->getMessage();
             return $errors;
@@ -63,12 +62,10 @@ class StripeHelper
                 return $success;
             }
         } catch (Exception $e) {
-            dd($e->getMessage());
             $errors['code'] = 400;
             $errors['message'] = $e->getMessage();
             return $errors;
         } catch (Exception $e) {
-            dd($e->getMessage());
             $errors['code'] = 400;
             $errors['message'] = $e->getMessage();
             return $errors;

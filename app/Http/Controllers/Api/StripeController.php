@@ -33,15 +33,15 @@ class StripeController extends Controller
             
             $response = Stripe\EphemeralKey::create(['customer' => Auth::user()->stripe_customer_id ], ['stripe_version' => '2020-08-27']);
             //dd($data);
-            return $this->responseHelper->success('Ephemeral Key created successful',$response);
+            //return $this->responseHelper->success('Ephemeral Key created successful',$response);
+            return response()->json($response);
         } catch (\Stripe\Exception\CardException $e) {
-            dd($e);
+            
             return $this->responseHelper->error('Something went wrong');
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            dd($e);
+           
             return $this->responseHelper->error('Something went wrong');
         } catch (Exception $e) {
-            dd($e);
             return $this->responseHelper->error('Something went wrong');
         }
     }
