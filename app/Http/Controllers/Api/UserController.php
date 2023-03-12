@@ -9,6 +9,7 @@ use App\Helpers\Api\ResponseHelper;
 use App\Helpers\Api\CommonHelper;
 use App\Helpers\Api\StripeHelper;
 use App\Models\User;
+use App\Models\UserSubscription;
 use Validator;
 use Auth;
 use Exception;
@@ -122,6 +123,9 @@ class UserController extends Controller
                 $stripeHelper->CreateCustomer($request->email);
 
                 $user = User::find(Auth::user()->id);
+                // get user subscriptions data
+                $user_subscription = UserSubscription::where('user_id',Auth::user()->id)->where('is_current_subscription',1)->first();
+                $user->subscription = ($user_subscription != null) ? $user_subscription : (object)[];
                 $user->role = $user->roles()->get()->toArray();
                 $data = $user->toArray();
                 $response['user'] = $data;
