@@ -36,29 +36,48 @@ class ProductController extends Controller
              $category_id = isset($request->category_id) ? $request->category_id : '';
              $user_id = isset($request->user_id) ? $request->user_id : '';
              $filter = isset($request->filter) ? $request->filter : '';
+             $search_text = isset($request->searchText) ? $request->searchText : '';
              $products = Product::with('ProductImage');
              if(!empty($category_id )){
                 $products = $products->where('cat_id',$category_id);
              }
              if(!empty($user_id)){
                 $products = $products->where('shopkeeper_id',$user_id);
-             }else{
-                if(!empty($filter)){
-                   if($filter == 1){
-                    $products = $products->orderBy('selling_price','ASC'); 
-                   }
-                   else if($filter == 2){
-                    $products = $products->orderBy('selling_price','DESC');
-                   }
-                   else if($filter == 3){
-                    $products = $products->orderBy('id','DESC');
-                   }
-                   else if($filter == 4){
-                    $products = $products->orderBy('counter','DESC');
-                   }
-                }
              }
 
+            if(!empty($filter)){
+                if($filter == 1){
+                $products = $products->orderBy('selling_price','ASC'); 
+                }
+                else if($filter == 2){
+                $products = $products->orderBy('selling_price','DESC');
+                }
+                else if($filter == 3){
+                $products = $products->orderBy('id','DESC');
+                }
+                else if($filter == 4){
+                $products = $products->orderBy('counter','DESC');
+                }
+            }
+             
+            if (!empty($search_text)) {
+                $split_array = explode(' ', $search_text);
+                $products->where(function ($q) use ($split_array) {
+                    foreach ($split_array as $txt) {
+                        $q->orWhere('name', 'like', '%' . $txt . '%');
+                        $q->orWhereIn('id',function($query) use($txt){
+                            $query->select('product_id')
+                            ->from('shop_products')
+                            ->whereIn('shop_id',function($sub_query) use($txt){
+                                $sub_query->select('id')
+                                ->from('shops')
+                                ->where('shop_name', 'like', '%' . $txt . '%');  
+                            });
+                            
+                        });
+                    }
+                });
+            }
 
 
              $totalCount = $products->count();
