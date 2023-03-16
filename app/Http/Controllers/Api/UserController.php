@@ -50,6 +50,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->status = 1;
             $user->address =  isset($request->address) ? $request->address : null;
+            $user->phone_number =  isset($request->phone_number) ? $request->phone_number : null;
             $profile_pic = $request->file('profile_pic');   
             if ($profile_pic) {
                 $ext = $profile_pic->getClientOriginalExtension();
@@ -266,7 +267,7 @@ class UserController extends Controller
             $getUser->lastname = isset($request->last_name) ?  $request->last_name : $getUser->last_name;
             $getUser->email = isset($request->email) ?  $request->email : $getUser->email;
             $getUser->address = isset($request->address) ?  $request->address : $getUser->address;
-
+            $getUser->phone_number =  isset($request->phone_number) ? $request->phone_number : null;
             $profile_pic = $request->file('profile_picture');
             if ($profile_pic) {
                 $ext = $profile_pic->getClientOriginalExtension();
