@@ -292,4 +292,20 @@ class UserController extends Controller
             return $this->responseHelper->error($e->getMessage());
         }
     }
+
+    public function logout(Request $request){
+        try {
+            if (Auth::user()) {
+                $token = Auth::user()->token();
+                $token->revoke();
+                $token->delete();
+
+                return $this->responseHelper->success(trans('Logout sucessfully'));
+            } else {
+                return $this->responseHelper->error('You are unothorised');
+            }
+        } catch (Exception $e) {
+            return $this->responseHelper->error($e->getMessage());
+        }
+    }
 }
