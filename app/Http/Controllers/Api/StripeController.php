@@ -132,6 +132,7 @@ class StripeController extends Controller
 
             $user_subscription = new UserSubscription();
             //$user_subscription->subscription_id = $getDefaultPlan->id;
+            $user_subscription->name = $request->plan_name;
             $user_subscription->stripe_subscription_id = $response->id;
             $user_subscription->plan_stripe_id = $response->items->data[0]['price']['product'];
             $user_subscription->price_stripe_id = $response->items->data[0]['price']['id'];
@@ -141,7 +142,7 @@ class StripeController extends Controller
             $user_subscription->amount = $response->items->data[0]['price']['unit_amount']/100;
             $user_subscription->from_date = date('Y-m-d',  $response->current_period_start);
             $user_subscription->to_date = date('Y-m-d', $response->current_period_end);
-            $subscription_data = $user_subscription->save();
+            //$subscription_data = $user_subscription->save();
             if($user_subscription->save()){
                 $data  =  UserSubscription::find($user_subscription->id)->toArray();
                 return $this->responseHelper->success('User Subscribe sucessfully',$data);
