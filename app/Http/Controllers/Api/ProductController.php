@@ -115,7 +115,7 @@ class ProductController extends Controller
 
     public function getDetails($id){
         try{
-            $product = Product::with('ProductImage','ProductShop')->where('id',$id)->first()->toArray();
+            $product = Product::with('ProductImage','ProductShop','Shopkeeper')->where('id',$id)->first()->toArray();
             if($product){
                 $product_data = Product::find($id);
                 $product_data->counter = $product['counter'] + 1;
