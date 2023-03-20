@@ -142,6 +142,7 @@ class StripeController extends Controller
             $user_subscription->amount = $response->items->data[0]['price']['unit_amount']/100;
             $user_subscription->from_date = date('Y-m-d',  $response->current_period_start);
             $user_subscription->to_date = date('Y-m-d', $response->current_period_end);
+            $user_subscription->metadata  = ($request->metadata) ? $request->metadata : '';
             //$subscription_data = $user_subscription->save();
             if($user_subscription->save()){
                 $data  =  UserSubscription::find($user_subscription->id)->toArray();
