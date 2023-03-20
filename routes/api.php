@@ -69,7 +69,7 @@ Route::group(['prefix' => 'plan'],function(){
 
    Route::post('/subscribe-user', [StripeController::class, 'subscribeUser']);
    Route::get('/create-ephemeral-key', [StripeController::class, 'createEphemeralKey']);
-
+   Route::get('/logout', [UserController::class, 'logout']);
 });
 
 
