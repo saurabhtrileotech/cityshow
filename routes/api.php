@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\StripeController;
+use App\Http\Controllers\Api\CityController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +30,8 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('send-forgot-password-otp', [UserController::class, 'sendForgotPasswordOtp']);
 Route::post('verify-otp', [UserController::class, 'verifyOtp']);
 Route::post('forgot-password', [UserController::class, 'forgotPassword']);
+Route::get('cities', [UserController::class, 'getCities']);
+
 
 Route::group(['middleware' => ['auth:api']], function () {
  Route::post('update-profile', [UserController::class, 'updateProfile']);

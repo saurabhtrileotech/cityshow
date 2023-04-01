@@ -10,6 +10,7 @@ use App\Helpers\Api\CommonHelper;
 use App\Helpers\Api\StripeHelper;
 use App\Models\User;
 use App\Models\UserSubscription;
+use App\Models\City;
 use Validator;
 use Auth;
 use Exception;
@@ -307,5 +308,19 @@ class UserController extends Controller
         } catch (Exception $e) {
             return $this->responseHelper->error($e->getMessage());
         }
+    }
+
+    public function getCities(){
+        try{
+            $cities =  City::get();
+            
+            // $response['cities'] = $cities;
+
+             return $this->responseHelper->success('Cities gets successfully', $cities);                
+            
+        }
+        catch(Exception $e){
+            return $this->responseHelper->error($e);
+        } 
     }
 }
