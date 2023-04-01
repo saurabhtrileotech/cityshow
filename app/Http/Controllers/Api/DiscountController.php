@@ -202,7 +202,7 @@ class DiscountController extends Controller
 
     public function getDetails($id){
         try{
-            $discount = Discount::with('DiscountProducts.ProductImage')->where('id',$id)->first()->toArray();
+            $discount = Discount::with('Shopkeeper','DiscountProducts.ProductImage')->where('id',$id)->first()->toArray();
             if($discount){
                 return $this->responseHelper->success('Discount details successfully!',$discount);
             }

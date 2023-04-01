@@ -52,6 +52,13 @@
                 <p>Shops</p>
               </a>
           </li>
+
+          <li class="nav-item">
+              <a href="{{url('cities')}}" class="nav-link {{ Request::is('cities','city/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-store"></i>
+                <p>Cities</p>
+              </a>
+          </li>
           
           <li class="nav-item">
               <a href="{{url('products')}}" class="nav-link {{ Request::is('products','product/*') ? 'active' : '' }}">

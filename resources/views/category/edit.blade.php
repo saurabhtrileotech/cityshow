@@ -21,7 +21,7 @@
 							</div>
 							<div class="col-sm-6">
 								<ol class="breadcrumb float-sm-right">
-								  <li class="breadcrumb-item"><a href="{{url('camp_manager')}}">Manage Camp managers</a></li>
+                  <li class="breadcrumb-item"><a href="{{url('categories')}}">Categories</a></li>
 									<li class="breadcrumb-item active">{{ __('Category')}}</a></li>
 								</ol>
 							</div>

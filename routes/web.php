@@ -119,7 +119,16 @@ Route::group(['middleware' => 'can:manage_permission'], function(){
             Route::get('/edit/{id}', [App\Http\Controllers\CMSPageController::class, 'edit'])->name('cmsPages.edit');
             Route::post('/update/{id}', [App\Http\Controllers\CMSPageController::class, 'update'])->name('cmsPages.update');
         });
-    
+
+        Route::get('/cities', [App\Http\Controllers\CityController::class, 'index'])->name('cities');
+        Route::get('/cities/get-list', [App\Http\Controllers\CityController::class, 'getList'])->name('city-list-ajax');;
+        Route::get('/city/create', [App\Http\Controllers\CityController::class, 'create'])->name('city.create');
+        Route::post('/city/create', [App\Http\Controllers\CityController::class, 'store'])->name('city.store');
+        Route::get('/city/edit/{id}', [App\Http\Controllers\CityController::class, 'edit'])->name('city.edit');
+        Route::post('/city/edit/{id}', [App\Http\Controllers\CityController::class, 'update'])->name('city.update');
+        Route::get('/city/view/{id}', [App\Http\Controllers\CityController::class, 'view'])->name('city.view');
+        Route::delete('/city/delete/{id}', [App\Http\Controllers\CityController::class, 'delete'])->name('city.delete');
+        
     });
         
 

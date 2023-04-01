@@ -107,9 +107,12 @@ class ShopController extends Controller
             if(isset($request->longitude)){
                 $shop->city =  $request->city;
             }
-            // if(isset($request->phone_number)){
-            //     $shop->phone_number =  $request->phone_number;
-            // }
+            if(isset($request->open_time)){
+                $shop->open_time =  $request->open_time;
+            }
+            if(isset($request->closed_time)){
+                $shop->closed_time =  $request->closed_time;
+            }
             $banner_image = $request->file('banner_image');
             if ($banner_image) {
                 $ext = $banner_image->getClientOriginalExtension();
@@ -140,8 +143,7 @@ class ShopController extends Controller
             }
 
             $shop->save();
-
-
+            
             // if update the shop images then delete all images
             ShopImage::where('shop_id',$request->id)->delete();
 

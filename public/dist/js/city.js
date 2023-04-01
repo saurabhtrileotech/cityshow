@@ -3,7 +3,7 @@
     'use strict';
     // Students table
     $(document).ready(function () {
-        var dTable = $('#product_table').DataTable({
+        var dTable = $('#city_table').DataTable({
             serverSide: true,
             processing: true,
             language: {
@@ -14,25 +14,23 @@
             },
             pagingType: "full_numbers",
             ajax: {
-                url: productListAjax,
+                url: cityListAjax,
                 "dataType": "json",
                 "type": "get",
             },
             columns: [
-                { "data": "product_name" },
-                { "data": "price" },
-                { "data": "shopkeeper" },
+                { "data": "name" },
+                { "data": "postcode" },
                 { "data": "action", sortable: false },
             ]
 
         });
 
-
-        $(document).on("click", ".js-product-delete", function () {
+        $(document).on("click", ".js-city-delete", function () {
             var id = $(this).data("id");
             console.log(id);
             Swal.fire({
-                text: "Are you sure you want to delete product?",
+                text: "Are you sure you want to delete city?",
                 icon: "info",
                 showCancelButton: !0,
                 confirmButtonText: "Yes",
@@ -47,7 +45,7 @@
                         $.ajax({
                             type: "DELETE",
                             dataType: "json",
-                            url: `product/delete/`+id,
+                            url: `city/delete/`+id,
                             data: {
                                 "_token": CSRF_TOKEN,
                                 },

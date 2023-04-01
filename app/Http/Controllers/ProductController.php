@@ -72,7 +72,7 @@ class ProductController extends Controller
             $action = '';
             $action .= '<a href="' . route('product.edit', ['id' => $val->id]) . '" title="edit" class="btn btn-warning btn-icon btn-sm edit" style="margin-right:5px;"><i class="fa fa-edit"></i></a>
             <a href="' . route('product.view', ['id' => $val->id]) . '" title="view" class="btn btn-primary btn-icon btn-sm view" style="margin-right:5px;"><i class="fa fa-eye"></i></a>
-            <a   title="delete" class="btn btn-danger btn-icon btn-sm remove" data-id="'.$val->id.'" id="js-product-delete"><i class="fa fa-trash"></i></a>';
+            <a   title="delete" class="btn btn-danger btn-icon btn-sm remove js-product-delete" data-id="'.$val->id.'" id="js-product-delete"><i class="fa fa-trash"></i></a>';
             //$action .= '';
             $nestedData['product_name'] = $val->name;
             $nestedData['price'] = $val->price;

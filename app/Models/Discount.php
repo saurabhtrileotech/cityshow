@@ -23,4 +23,9 @@ class Discount extends Model
     public function DiscountShop(){
         return $this->belongsToMany(Shop::class,'shop_discounts','discount_id','shop_id');
     }
+    public function Shopkeeper()
+    {
+        return $this->belongsTo('App\Models\User', 'shop_keeper_id', 'id');
+    }
+
 }
