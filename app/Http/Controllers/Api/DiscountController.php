@@ -164,7 +164,7 @@ class DiscountController extends Controller
 
             $user_id = isset($request->user_id) ? $request->user_id : '';
             $current_date = date('Y-m-d');
-            $discounts = Discount::select('*')->whereDate('end_date','>=', $current_date);
+            $discounts = Discount::with('Shopkeeper')->whereDate('end_date','>=', $current_date);
             if(!empty($user_id)){
                $discounts = $discounts->where('shop_keeper_id',$user_id);
             }
