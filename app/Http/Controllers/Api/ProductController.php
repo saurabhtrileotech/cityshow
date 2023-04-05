@@ -138,18 +138,21 @@ class ProductController extends Controller
             'shop_keeper_id' => 'required',
             'shop_id.*' => 'required',
             'product_name' => 'required',
+            'product_type' => 'required',
             'product_price' => 'required|numeric|min:0|not_in:0',
+            'product_selling_price' => 'required|numeric|min:0|not_in:0',
             'images.*' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg,webp',
         ],['shop_id.*.required' => "Please select any one shop."]);
         if($validated->fails()){
             return $this->responseHelper->error($validated->errors()->first());
          }
-            $product = new Product(); 
+            $product = new Product();
             $product->shopkeeper_id  = $request->shop_keeper_id;
             //$product->shop_id = $request->shop_id;
             $product->cat_id = ($request->category_id) ? $request->category_id : null;
             $product->subcat_id = ($request->sub_category_id) ? $request->sub_category_id : null; 
             $product->name = $request->product_name;
+            $product->product_type = ($request->product_type) ? $request->product_type : null;
             $product->brand_name = ($request->brand_name) ? $request->brand_name : null;
             $product->model_name = ($request->model_name) ? $request->model_name : null;
             $product->price = $request->product_price;
@@ -166,6 +169,13 @@ class ProductController extends Controller
             $product->connectivity = ($request->connectivity) ? $request->connectivity : null;
             $product->key_featurees = ($request->key_feature) ? implode(",",$request->key_feature) : null;    
             $product->description = ($request->description) ? $request->description : null;
+            $product->emi = ($request->emi) ? $request->emi : null;
+            $product->gross_weight = ($request->gross_weight) ? $request->gross_weight : null;
+            $product->certified_jwellery = ($request->certified_jwellery) ? $request->certified_jwellery : null;
+            $product->installation = ($request->installation) ? $request->installation : null;
+            $product->footwear_size = ($request->footwear_size) ? $request->footwear_size : null;
+            $product->guaranty = ($request->guaranty) ? $request->guaranty : null;
+            $product->live_demo = ($request->live_demo) ? $request->live_demo : null;
 
            if($product->save()){
             // save Multiple images
@@ -261,19 +271,22 @@ class ProductController extends Controller
     //update product api
     public function update(Request $request)
     {
+        //dd('hii');
         try {
 
         $validated = Validator::make($request->all(),[
             'shop_keeper_id' => 'required',
             'shop_id.*' => 'required',
             'product_name' => 'required',
+            'product_type' => 'required',
             'model_name' => 'required',
             'product_price' => 'required|numeric|min:0|not_in:0',
+            'product_selling_price' => 'required|numeric|min:0|not_in:0',
             'images*' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg,webp|max:1024',
         ],['shop_id.*.required' => "Please select any one shop."]);
 
          if($validated->fails()){
-            return redirect()->back()->with('error', $validated->errors()->first());
+            return $this->responseHelper->error($validated->errors()->first());
          }
 
 
@@ -283,6 +296,7 @@ class ProductController extends Controller
             $product->cat_id = ($request->category_id) ? $request->category_id : $product->cat_id;
             $product->subcat_id = ($request->sub_category_id) ? $request->sub_category_id : $product->subcat_id; 
             $product->name = $request->product_name?$request->product_name:$request->product_name;
+            $product->product_type = ($request->product_type) ? $request->product_type : null;
             $product->brand_name = ($request->brand_name) ? $request->brand_name : $product->brand_name;
             $product->model_name = ($request->model_name) ? $request->model_name : $product->model_name;
             $product->price = $request->product_price?$request->product_price:$product->price;
@@ -299,6 +313,13 @@ class ProductController extends Controller
             $product->connectivity = ($request->connectivity) ? $request->connectivity : $product->connectivity;
             $product->key_featurees = ($request->key_feature) ? implode(",",$request->key_feature) : $product->key_featurees;    
             $product->description = ($request->description) ? $request->description : $product->description;
+            $product->emi = ($request->emi) ? $request->emi : null;
+            $product->gross_weight = ($request->gross_weight) ? $request->gross_weight : null;
+            $product->certified_jwellery = ($request->certified_jwellery) ? $request->certified_jwellery : null;
+            $product->installation = ($request->installation) ? $request->installation : null;
+            $product->footwear_size = ($request->footwear_size) ? $request->footwear_size : null;
+            $product->guaranty = ($request->guaranty) ? $request->guaranty : null;
+            $product->live_demo = ($request->live_demo) ? $request->live_demo : null;
             $deletedImagesId = ($request->deletedImagesId) ? explode(",",$request->deletedImagesId) : [];
            if($product->save()){
             // delete existing images
