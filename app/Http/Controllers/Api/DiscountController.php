@@ -122,11 +122,18 @@ class DiscountController extends Controller
                 //$sendPushNotificationRequest = (new \App\Jobs\sendPushNotifications($this->commonHelper, $pushNotificationData));
                 //dispatch($sendPushNotificationRequest);
                 if(!$request->id){
+                $shopName = Shop::select('shop_name')->where('user_id',Auth::user()->id)->first();
                 $device_tokens = User::select('device_token')->whereNotNull('device_token')->pluck('device_token')->toArray();
                 if(!empty($device_tokens)){
+                    // if shop name is empty then show shopkeeper name in  notification title
+                    if($shopName){
+                        $addedBy = $shopName->shop_name;
+                    }else{
+                        $addedBy = Auth::user()->first_name. " ".Auth::user()->lastname;
+                    }
                     //foreach($users as $user){
                         $title = "New Discount added";
-                        $message = "New Discount is added by ".Auth::user()->username;
+                        $message = "New Discount is added by ".$addedBy;
                         $type = 'add_discount';
                         $notification_payload = $discount;
                         $device_type = 'android';
