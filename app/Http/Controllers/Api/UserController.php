@@ -173,7 +173,7 @@ class UserController extends Controller
                 $user->update();
                 return $this->responseHelper->success(trans('Forgot password OTP send on your mail'), $user);
             } else {
-                return $this->responseHelper->error(trans('Something went wrongs'));
+                return $this->responseHelper->error(trans('Something went wrong'));
             }
         } catch (Exception $e) {
             return $this->responseHelper->error($e->getMessage());

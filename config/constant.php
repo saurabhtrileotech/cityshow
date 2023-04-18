@@ -4,10 +4,10 @@ return [
     'MAIL_MAILER'=>'smtp',
     'MAIL_HOST'=>'smtp.gmail.com',
     'MAIL_PORT'=>25,
-    'MAIL_USERNAME'=>'wellnessgurubuddy@gmail.com',
-    'MAIL_PASSWORD'=>'ipnvfghxywknimqv',
+    'MAIL_USERNAME'=>'saurabh.devstree@gmail.com',
+    'MAIL_PASSWORD'=>'ohrmzyymvxpicufm',
     'MAIL_ENCRYPTION'=>null,
-    'MAIL_FROM_ADDRESS'=>'wellnessgurubuddy@gmail.com',
+    'MAIL_FROM_ADDRESS'=>'saurabh.devstree@gmail.com',
     'MAIL_FROM_NAME'=>'${APP_NAME}',
 
     "STRIPE_SECRET_KEY" => "pk_test_51KjgLRSERxmiFRLSCRCoevregNqNp5wcqlZTgTKEYnzA0qPegnfwyx1H6FRcHk2MLKJ2DMVsUNWVDdUUmOrQr9y800xcQFg6Ne",
