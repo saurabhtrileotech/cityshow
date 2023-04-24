@@ -162,6 +162,7 @@ class ProductController extends Controller
             $product->color = ($request->color) ? $request->color : null;
             $product->material = ($request->material) ? $request->material : null;
             $product->wight = ($request->weight) ? $request->weight : null;
+            $product->warranty = ($request->warranty) ? $request->warranty : "0";
             $product->is_gold = ($request->is_gold) ? $request->is_gold : "0";
             $product->device_os = ($request->device_os) ? $request->device_os : null;
             $product->ram = ($request->ram) ? $request->ram : null;
@@ -306,6 +307,7 @@ class ProductController extends Controller
             $product->color = ($request->color) ? $request->color : $product->color;
             $product->material = ($request->material) ? $request->material : $product->material;
             $product->wight = ($request->weight) ? $request->weight :  $product->wight;
+            $product->warranty = ($request->warranty) ? $request->warranty : "0";
             $product->is_gold = ($request->is_gold) ? $request->is_gold : $product->is_gold;
             $product->device_os = ($request->device_os) ? $request->device_os : $product->device_os;
             $product->ram = ($request->ram) ? $request->ram : $product->ram;
